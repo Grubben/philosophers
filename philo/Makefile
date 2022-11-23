@@ -13,17 +13,11 @@ SRCS		= $(wildcard src/*.c)
 
 OBJS		= $(SRCS:.c=.o)
 
-LIBFT			= src/libft.a
-
-$(NAME)		: $(LIBFT) $(OBJS)
+$(NAME)		: $(OBJS)
 			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
 
 %.o		: %.c
 			$(CC) $(CFLAGS) -c -o $@ $<
-
-$(LIBFT)	:
-			$(MAKE) -C src/libft
-			cp src/libft/libft.a $(LIBFT)
 
 all		: $(NAME)
 
