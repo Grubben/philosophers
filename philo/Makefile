@@ -14,7 +14,7 @@ SRCS		= $(wildcard src/*.c)
 OBJS		= $(SRCS:.c=.o)
 
 $(NAME)		: $(OBJS)
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) 
 
 %.o		: %.c
 			$(CC) $(CFLAGS) -c -o $@ $<
@@ -27,8 +27,6 @@ clean		:
 
 fclean		: clean
 			$(RM) $(NAME)
-			$(MAKE) -C src/libft fclean
-			$(RM) $(LIBFT)
 
 re			: fclean $(NAME)
 
