@@ -6,6 +6,8 @@
 # include <stdlib.h>
 
 # include <pthread.h>
+# include <sys/time.h>
+
 
 enum e_PHILOSTATE
 {
