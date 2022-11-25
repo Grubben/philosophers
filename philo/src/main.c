@@ -6,7 +6,7 @@
 /*   By: amc <amc@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/24 21:58:52 by amc              ###   ########.fr       */
+/*   Updated: 2022/11/25 17:23:09 by amc              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,64 +46,52 @@ int	philos_create(t_geninfo *wdata)
 
 int	main(int argc, char *argv[])
 {
-	t_geninfo		worldattr;
-	struct timeval	clock;
-	suseconds_t		startime;
-	
+	t_geninfo		wattr;
+	struct timeval	time;
+
 	// if (argc < 5 || argc > 6)
 	// 	return (0);
 	if (argc < 2)
 		return (printf("Not enough arguments\n") && 0);
-	worldattr.n_philos = ft_atoi(argv[1]);
-	// worldattr.n_forks = worldattr.n_philos / 2;
+	wattr.n_philos = ft_atoi(argv[1]);
+	// wattr.n_forks = wattr.n_philos / 2;
 
 	
-	gettimeofday(&clock, NULL);
-	startime = clock.tv_usec;
-	printf("%d\n", clock.tv_usec - startime);
-	usleep(1000000);
+	gettimeofday(&wattr.startime, NULL);
+
+	// printf("%d\n", (time.tv_sec - wattr.startime.tv_usec) / 1000);
 	
-	gettimeofday(&clock, NULL);
-	printf("%d\n", clock.tv_usec - startime);
-	usleep(1000000);
-	
-	gettimeofday(&clock, NULL);
-	printf("%d\n", clock.tv_usec - startime);
-	usleep(1000000);
+	while (1)
+	{
+		gettimeofday(&time, NULL);
+		printf("%ld__", (time.tv_sec - wattr.startime.tv_sec));
+		printf("%d\n", (time.tv_usec - wattr.startime.tv_usec));
+		printf("%ld\n\n", ((time.tv_usec-wattr.startime.tv_usec) / 1000) + ((time.tv_sec - wattr.startime.tv_sec) * 1000));
+		usleep(1000000);
+	}
 
-	gettimeofday(&clock, NULL);
-	printf("%d\n", clock.tv_usec - startime);
-	usleep(1000000);
 
-	gettimeofday(&clock, NULL);
-	printf("%d\n", clock.tv_usec - startime);
-	usleep(1000000);
-
-	gettimeofday(&clock, NULL);
-	printf("%d\n", clock.tv_usec - startime);
-	usleep(1000000);
-
-	// worldattr.time_to_die = ft_atoi(argv[2]);
-	// worldattr.time_to_eat = ft_atoi(argv[3]);
-	// worldattr.time_to_sleep = ft_atoi(argv[4]);
+	// wattr.time_to_die = ft_atoi(argv[2]);
+	// wattr.time_to_eat = ft_atoi(argv[3]);
+	// wattr.time_to_sleep = ft_atoi(argv[4]);
 	// if (argc == 6)
-	// 	worldattr.n_must_eat = ft_atoi(argv[5]);
+	// 	wattr.n_must_eat = ft_atoi(argv[5]);
 	// else
-	// 	worldattr.n_must_eat = 0;
+	// 	wattr.n_must_eat = 0;
 
-	if (! philos_create(&worldattr))
-		return (printf("Philosophers could not be created\n") && 0);
+	// if (! philos_create(&wattr))
+	// 	return (printf("Philosophers could not be created\n") && 0);
 	// usleep(3000000);
-	// worldattr.philarr = ft_calloc((worldattr.n_philos), sizeof(t_philo));
-	// tmphilo = worldattr.philarr[0];
+	// wattr.philarr = ft_calloc((wattr.n_philos), sizeof(t_philo));
+	// tmphilo = wattr.philarr[0];
 	// tmphilo.id = 0 + 1;
-	// pthread_create(&(worldattr.philarr[0].thread), NULL, philo_go, &tmphilo);
+	// pthread_create(&(wattr.philarr[0].thread), NULL, philo_go, &tmphilo);
 
 
 	// This is bad. Just using while learning
-	// pthread_join(worldattr.philarr[worldattr.n_philos - 1].thread, NULL);
-	// pthread_join(worldattr.philarr[0].thread, NULL);
+	// pthread_join(wattr.philarr[wattr.n_philos - 1].thread, NULL);
+	// pthread_join(wattr.philarr[0].thread, NULL);
 
-	usleep(3000000);
+	// usleep(3000000);
 	return (0);
 }

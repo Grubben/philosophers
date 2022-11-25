@@ -36,6 +36,8 @@ typedef struct s_geninfo
 	size_t  time_to_sleep;
 	size_t  n_must_eat;
 
+	struct timeval	startime;
+
 }               t_geninfo;
 
 
