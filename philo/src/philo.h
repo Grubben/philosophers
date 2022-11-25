@@ -13,32 +13,43 @@ enum e_PHILOSTATE
 {
 	EAT,
 	SLEEP,
-	THINK
+	THINK,
+	DEAD,
+	TAKEFORK
 };
 
-typedef struct s_philo
+typedef struct s_philo t_philo;
+typedef struct s_geninfo t_geninfo;
+
+struct s_philo
 {
 	pthread_t   thread;
 	size_t		id;
 
 	int			state; // e_PHILOSTATE
-}               t_philo;
+	int			n_forks;
+
+	t_geninfo	*wdata;
+};
 
 
-typedef struct s_geninfo
+struct s_geninfo
 {
 	size_t	n_philos;
 	t_philo	*philarr;
-	size_t	n_forks;
+
+	size_t	tableforks;
 
 	size_t  time_to_die;
 	size_t  time_to_eat;
 	size_t  time_to_sleep;
 	size_t  n_must_eat;
 
+	pthread_mutex_t	mutex;
+
 	struct timeval	startime;
 
-}               t_geninfo;
+};
 
 
 /*  UTILS   */
