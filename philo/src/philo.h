@@ -11,11 +11,12 @@
 
 enum e_PHILOSTATE
 {
-	EAT,
-	SLEEP,
 	THINK,
+	TAKEFORK,
+	EAT,
+	RELEASEFORK,
+	SLEEP,
 	DEAD,
-	TAKEFORK
 };
 
 typedef struct s_philo t_philo;
