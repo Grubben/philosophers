@@ -6,36 +6,46 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 15:00:01 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:53:49 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-suseconds_t	get_time(struct timeval *startime)
-{
-	struct timeval	now;
-	
-	gettimeofday(&now, NULL);
-	// printf("%ld\n", (now.tv_usec - startime->tv_usec) / 1000 + ((now.tv_sec - startime->tv_sec) * 1000));
-	return ((now.tv_usec - startime->tv_usec) / 1000 + ((now.tv_sec - startime->tv_sec) * 1000));
-}	
 
 void	statechange(t_philo *philo, int newstate)
 {
 	philo->state = newstate;
 	if (philo->state == THINK)
 	{
-		printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
-		//TODO: Here is where we'll do the mutex for grabbing
-		// tableforks. So protecting the call to statechange(philo, TAKEFORK)
-		return (statechange(philo, TAKEFORK));
+		philo->laststatestamp = get_timestamp(philo->wdata->startstamp);
+		// printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
+		printf("%ld %ld is thinking\n", get_timestamp(philo->wdata->startstamp), philo->id);
+		while (get_timestamp(philo->wdata->startstamp) - philo->laststatestamp < philo->wdata->time_to_die)
+		{
+			//TODO: Here is where we'll do the mutex for grabbing
+			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
+			pthread_mutex_lock(&philo->wdata->mutex);
+			if (philo->wdata->tableforks > 2)
+				return (statechange(philo, TAKEFORK));
+			pthread_mutex_unlock(&philo->wdata->mutex);
+		}
+		printf("Philosopher has died!\n");
+		return (statechange(philo, DEAD)); // Philosopher has died!
 	}
 	if (philo->state == TAKEFORK)
 	{
+		//TODO: This shouldn't be necessary since the checking
+		// is done in THINK state
+		if (philo->wdata->tableforks == 0)
+		{
+			printf("Error: taking a fork when there is none!\n");
+			return ;
+		}
 		// pthread_mutex_lock(&philo->wdata->mutex);
 		philo->wdata->tableforks -= 1;
-		// pthread_mutex_unlock(&philo->wdata->mutex);
+		//TODO: it's ugly and unclear unlocking in a different state 
+		pthread_mutex_unlock(&philo->wdata->mutex);
+		
 		printf("%ld %ld has taken a fork\n", get_time(&philo->wdata->startime), philo->id);
 		philo->n_forks++;
 		
@@ -73,6 +83,13 @@ void	statechange(t_philo *philo, int newstate)
 		usleep(2000000);
 		return (statechange(philo, THINK));
 	}
+	if (philo->state == DEAD)
+	{
+		printf("%ld %ld died\n", get_time(&philo->wdata->startime), philo->id);
+		// Really ugly but just to see if work
+		exit(0);
+		return ;
+	}
 }
 
 void	*philo_go(void *arg)
@@ -85,6 +102,7 @@ void	*philo_go(void *arg)
 	printf("Philosopher %ld Active\n", philo->id);
 	
 	// philo->state = THINK;
+	philo->laststatestamp = get_time(&philo->wdata->startime);
 	statechange(philo, THINK);
 	
 	
@@ -94,7 +112,7 @@ void	*philo_go(void *arg)
 	// 	{
 	// 		// pthread_mutex_lock(&philo->wdata->mutex);
 	// 		if (philo->wdata->tableforks > 0)
-				statechange(philo, TAKEFORK);
+				// statechange(philo, TAKEFORK);
 			// else
 			// 	printf("No forks at the table\n");
 			// pthread_mutex_unlock(&philo->wdata->mutex);
@@ -120,7 +138,7 @@ int	philos_create(t_geninfo *wdata)
 		tmphilo->id = i + 1;
 		tmphilo->wdata = wdata;
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
-		usleep(4000000);
+		// usleep(4000000);
 		// pthread_detach(tmphilo->thread);
 		i++;
 	}
@@ -134,6 +152,7 @@ int	main(int argc, char *argv[])
 	// if (argc < 5 || argc > 6)
 	// 	return (0);
 	// wattr.time_to_die = ft_atoi(argv[2]);
+	wattr.time_to_die = 2000;
 	// wattr.time_to_eat = ft_atoi(argv[3]);
 	// wattr.time_to_sleep = ft_atoi(argv[4]);
 	// if (argc == 6)
@@ -144,9 +163,17 @@ int	main(int argc, char *argv[])
 		return (printf("Not enough arguments\n") && 0);
 	wattr.n_philos = ft_atoi(argv[1]);
 	// wattr.tableforks = wattr.n_philos / 2;
-	wattr.tableforks = 2;
+	wattr.tableforks = 1;
 	pthread_mutex_init(&wattr.mutex, NULL);
 	gettimeofday(&wattr.startime, NULL);
+	wattr.startstamp = wattr.startime.tv_sec * 1000 + wattr.startime.tv_usec / 1000;
+
+	// while (1)
+	// {
+	// 	printf("%ld__", get_time(&wattr.startime));
+	// 	printf("%ld\n", get_timestamp(wattr.startstamp));
+	// 	usleep(2000000);
+	// }
 
 	if (! philos_create(&wattr))
 		return (printf("Philosophers could not be created\n") && 0);
