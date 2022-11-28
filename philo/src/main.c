@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 16:33:48 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/28 16:51:47 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,24 +103,9 @@ void	*philo_go(void *arg)
 
 	printf("Philosopher %ld Active\n", philo->id);
 	
-	// philo->state = THINK;
 	philo->laststatestamp = get_time(&philo->wdata->startime);
 	statechange(philo, THINK);
 	
-	
-	// while (philo->state != DEAD)
-	// {
-	// 	if (philo->state == THINK)
-	// 	{
-	// 		// pthread_mutex_lock(&philo->wdata->mutex);
-	// 		if (philo->wdata->tableforks > 0)
-				// statechange(philo, TAKEFORK);
-			// else
-			// 	printf("No forks at the table\n");
-			// pthread_mutex_unlock(&philo->wdata->mutex);
-	// 	}
-	// }
-	// usleep(6000000);
 	return (NULL);
 }
 
@@ -140,8 +125,9 @@ int	philos_create(t_geninfo *wdata)
 		tmphilo->id = i + 1;
 		tmphilo->wdata = wdata;
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
+		// 5 micro-seconds
 		usleep(5);
-		// pthread_detach(tmphilo->thread);
+		pthread_detach(tmphilo->thread);
 		i++;
 	}
 	return (1);
@@ -154,7 +140,7 @@ int	main(int argc, char *argv[])
 	// if (argc < 5 || argc > 6)
 	// 	return (0);
 	// wattr.time_to_die = ft_atoi(argv[2]);
-	wattr.time_to_die = 2000;
+	wattr.time_to_die = 3000;
 	// wattr.time_to_eat = ft_atoi(argv[3]);
 	// wattr.time_to_sleep = ft_atoi(argv[4]);
 	// if (argc == 6)
@@ -186,12 +172,15 @@ int	main(int argc, char *argv[])
 	}
 	//TODO: I need to unlock this to destroy it.
 	// But do I need to destroy it?
-	pthread_mutex_unlock(&wattr.mutex);
+	//ALERT: De-commenting this gives a seg-fault!
+	// why??? So it's still locked when program ends
+	// pthread_mutex_unlock(&wattr.mutex);
 
 	// This is bad. Just using while learning
 	// pthread_join(wattr.philarr[wattr.n_philos - 1].thread, NULL);
 	// pthread_join(wattr.philarr[0].thread, NULL);
 
-	usleep(5000);
+	// usleep(5000);
+	free(wattr.philarr);
 	return (0);
 }
