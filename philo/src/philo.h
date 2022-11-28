@@ -53,12 +53,17 @@ struct s_geninfo
 	struct timeval	startime;
 	suseconds_t	startstamp;
 
+	int	PHILO_DIED;
 };
 
 /*	TIME	*/
 suseconds_t	get_time(struct timeval *startime);
 
 suseconds_t	get_timestamp(suseconds_t startstamp);
+
+
+/*	PRINTS	*/
+void	print_state(t_philo *philo);
 
 /*  UTILS   */
 int	ft_atoi(const char *str);

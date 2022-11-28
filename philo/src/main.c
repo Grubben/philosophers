@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 15:53:49 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/28 16:33:48 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	statechange(t_philo *philo, int newstate)
 	{
 		philo->laststatestamp = get_timestamp(philo->wdata->startstamp);
 		// printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
-		printf("%ld %ld is thinking\n", get_timestamp(philo->wdata->startstamp), philo->id);
+		print_state(philo);
 		while (get_timestamp(philo->wdata->startstamp) - philo->laststatestamp < philo->wdata->time_to_die)
 		{
 			//TODO: Here is where we'll do the mutex for grabbing
@@ -29,7 +29,7 @@ void	statechange(t_philo *philo, int newstate)
 				return (statechange(philo, TAKEFORK));
 			pthread_mutex_unlock(&philo->wdata->mutex);
 		}
-		printf("Philosopher has died!\n");
+		// printf("Philosopher has died!\n");
 		return (statechange(philo, DEAD)); // Philosopher has died!
 	}
 	if (philo->state == TAKEFORK)
@@ -45,8 +45,8 @@ void	statechange(t_philo *philo, int newstate)
 		philo->wdata->tableforks -= 1;
 		//TODO: it's ugly and unclear unlocking in a different state 
 		pthread_mutex_unlock(&philo->wdata->mutex);
-		
-		printf("%ld %ld has taken a fork\n", get_time(&philo->wdata->startime), philo->id);
+
+		print_state(philo);		
 		philo->n_forks++;
 		
 		if (philo->n_forks == 2)
@@ -58,7 +58,7 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == EAT)
 	{
-		printf("%ld %ld is eating\n", get_time(&philo->wdata->startime), philo->id);
+		print_state(philo);
 		// usleep(philo->wdata->time_to_eat);
 		usleep(2000000);
 		//TODO: Must let go of the forks!
@@ -66,9 +66,11 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == RELEASEFORK)
 	{
-		printf("%ld %ld is releasing a fork\n", get_time(&philo->wdata->startime), philo->id);
-		//TODO: mutex this!
+		print_state(philo);
+		// Mutex the releasing of the fork
+		pthread_mutex_lock(&philo->wdata->mutex);
 		philo->wdata->tableforks++;
+		pthread_mutex_unlock(&philo->wdata->mutex);
 		
 		philo->n_forks -= 1;
 		if (philo->n_forks > 0)
@@ -78,16 +80,16 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == SLEEP)
 	{
-		printf("%ld %ld is sleeping\n", get_time(&philo->wdata->startime), philo->id);
+		print_state(philo);
 		// usleep(philo->wdata->time_to_sleep);
 		usleep(2000000);
 		return (statechange(philo, THINK));
 	}
 	if (philo->state == DEAD)
 	{
-		printf("%ld %ld died\n", get_time(&philo->wdata->startime), philo->id);
-		// Really ugly but just to see if work
-		exit(0);
+		pthread_mutex_lock(&philo->wdata->mutex);
+		print_state(philo);
+		philo->wdata->PHILO_DIED = 1;
 		return ;
 	}
 }
@@ -138,7 +140,7 @@ int	philos_create(t_geninfo *wdata)
 		tmphilo->id = i + 1;
 		tmphilo->wdata = wdata;
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
-		// usleep(4000000);
+		usleep(5);
 		// pthread_detach(tmphilo->thread);
 		i++;
 	}
@@ -178,10 +180,18 @@ int	main(int argc, char *argv[])
 	if (! philos_create(&wattr))
 		return (printf("Philosophers could not be created\n") && 0);
 
+	wattr.PHILO_DIED = 0;
+	while (wattr.PHILO_DIED == 0)
+	{
+	}
+	//TODO: I need to unlock this to destroy it.
+	// But do I need to destroy it?
+	pthread_mutex_unlock(&wattr.mutex);
+
 	// This is bad. Just using while learning
-	pthread_join(wattr.philarr[wattr.n_philos - 1].thread, NULL);
+	// pthread_join(wattr.philarr[wattr.n_philos - 1].thread, NULL);
 	// pthread_join(wattr.philarr[0].thread, NULL);
 
-	// usleep(3000000);
+	usleep(5000);
 	return (0);
 }
