@@ -30,6 +30,8 @@ struct s_philo
 	int			state; // e_PHILOSTATE
 	int			n_forks;
 
+	suseconds_t	laststatestamp;
+
 	t_geninfo	*wdata;
 };
 
@@ -41,7 +43,7 @@ struct s_geninfo
 
 	size_t	tableforks;
 
-	size_t  time_to_die;
+	long	time_to_die;
 	size_t  time_to_eat;
 	size_t  time_to_sleep;
 	size_t  n_must_eat;
@@ -49,9 +51,14 @@ struct s_geninfo
 	pthread_mutex_t	mutex;
 
 	struct timeval	startime;
+	suseconds_t	startstamp;
 
 };
 
+/*	TIME	*/
+suseconds_t	get_time(struct timeval *startime);
+
+suseconds_t	get_timestamp(suseconds_t startstamp);
 
 /*  UTILS   */
 int	ft_atoi(const char *str);
