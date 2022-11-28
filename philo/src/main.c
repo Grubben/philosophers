@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/26 13:18:58 by endarc           ###   ########.fr       */
+/*   Updated: 2022/11/28 15:00:01 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ suseconds_t	get_time(struct timeval *startime)
 void	statechange(t_philo *philo, int newstate)
 {
 	philo->state = newstate;
-	//TODO: Splitting printf is a horrible idea! The best way would be to make a print-mutex
-	// If not worth it at least put all on same line
-	printf("%ld %ld ", get_time(&philo->wdata->startime), philo->id);
 	if (philo->state == THINK)
 	{
-		printf("is thinking\n");
+		printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
 		//TODO: Here is where we'll do the mutex for grabbing
 		// tableforks. So protecting the call to statechange(philo, TAKEFORK)
 		return (statechange(philo, TAKEFORK));
@@ -39,7 +36,7 @@ void	statechange(t_philo *philo, int newstate)
 		// pthread_mutex_lock(&philo->wdata->mutex);
 		philo->wdata->tableforks -= 1;
 		// pthread_mutex_unlock(&philo->wdata->mutex);
-		printf("has taken a fork\n");
+		printf("%ld %ld has taken a fork\n", get_time(&philo->wdata->startime), philo->id);
 		philo->n_forks++;
 		
 		if (philo->n_forks == 2)
@@ -51,7 +48,7 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == EAT)
 	{
-		printf("is eating\n");
+		printf("%ld %ld is eating\n", get_time(&philo->wdata->startime), philo->id);
 		// usleep(philo->wdata->time_to_eat);
 		usleep(2000000);
 		//TODO: Must let go of the forks!
@@ -59,7 +56,7 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == RELEASEFORK)
 	{
-		printf("is releasing a fork\n");
+		printf("%ld %ld is releasing a fork\n", get_time(&philo->wdata->startime), philo->id);
 		//TODO: mutex this!
 		philo->wdata->tableforks++;
 		
@@ -71,7 +68,7 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == SLEEP)
 	{
-		printf("is sleeping\n");
+		printf("%ld %ld is sleeping\n", get_time(&philo->wdata->startime), philo->id);
 		// usleep(philo->wdata->time_to_sleep);
 		usleep(2000000);
 		return (statechange(philo, THINK));
