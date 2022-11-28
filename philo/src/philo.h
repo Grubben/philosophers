@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 17:47:36 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:50:13 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ struct s_philo
 
 	int			state; // e_PHILOSTATE
 	
-	int			n_forks; // Will be removed!
+	int			n_forks; //TODO: remove!
 
 	int			*fleft;
 	int			*fright;
@@ -58,7 +58,7 @@ struct s_geninfo
 
 	size_t			n_forks;
 	int				*forks;
-	size_t			tableforks;
+	size_t			tableforks; //TODO: remove!
 
 	long			time_to_die;
 	size_t			time_to_eat;

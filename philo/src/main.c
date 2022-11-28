@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 17:46:53 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:59:11 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,11 @@ int	philostable_create(t_geninfo *wdata)
 		tmphilo->wdata = wdata;
 
 		if (i < wdata->n_forks)
+		{
+			// Putting a fork there
+			wdata->forks[i] = 1;
 			tmphilo->fleft = &wdata->forks[i];
+		}
 
 		i++;
 	}
@@ -144,7 +148,9 @@ int	philostable_create(t_geninfo *wdata)
 		if (i + 1 == wdata->n_forks)
 			tmphilo->fright = wdata->philarr[0].fleft;
 		else // right fork of each is left of next
-			tmphilo->fright = wdata->philarr[i + 1].fleft;		
+			tmphilo->fright = wdata->philarr[i + 1].fleft;
+		
+		i++;
 	}
 
 	return (1);
@@ -189,7 +195,7 @@ int	main(int argc, char *argv[])
 	wattr.n_philos = ft_atoi(argv[1]);
 
 	wattr.tableforks = 1;
-	wattr.n_forks = 1;
+	wattr.n_forks = wattr.n_philos;
 	
 	pthread_mutex_init(&wattr.mutex, NULL);
 	gettimeofday(&wattr.startime, NULL);
