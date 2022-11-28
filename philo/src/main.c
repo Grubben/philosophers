@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 16:51:47 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:46:53 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	statechange(t_philo *philo, int newstate)
 	{
 		pthread_mutex_lock(&philo->wdata->mutex);
 		print_state(philo);
-		philo->wdata->PHILO_DIED = 1;
+		philo->wdata->philo_died = 1;
 		return ;
 	}
 }
@@ -109,25 +109,61 @@ void	*philo_go(void *arg)
 	return (NULL);
 }
 
-int	philos_create(t_geninfo *wdata)
+int	philostable_create(t_geninfo *wdata)
 {
 	size_t	i;
 	t_philo	*tmphilo;
 
 	// Needs to be freed!!!
 	wdata->philarr = ft_calloc((wdata->n_philos), sizeof(t_philo));
-	if (!wdata->philarr)
+	wdata->forks = malloc((wdata->n_forks) * sizeof(int));
+	if (!wdata->philarr && wdata->forks)
 		return (0);
+
 	i = 0;
+	// Set forks
 	while (i < wdata->n_philos)
 	{
 		tmphilo = &wdata->philarr[i];
 		tmphilo->id = i + 1;
 		tmphilo->wdata = wdata;
+
+		if (i < wdata->n_forks)
+			tmphilo->fleft = &wdata->forks[i];
+
+		i++;
+	}
+	if ( i < 2)
+		return (1); // Not sure if necessary
+	i = 0;
+	while (i < wdata->n_forks)
+	{
+		tmphilo = &wdata->philarr[i];
+		
+		// Right fork of last is left of first
+		if (i + 1 == wdata->n_forks)
+			tmphilo->fright = wdata->philarr[0].fleft;
+		else // right fork of each is left of next
+			tmphilo->fright = wdata->philarr[i + 1].fleft;		
+	}
+
+	return (1);
+}
+
+int	threads_create(t_geninfo *wdata)
+{
+	size_t	i;
+	t_philo	*tmphilo;
+	// Create philo-threads
+	i = 0;
+	while (i < wdata->n_philos)
+	{
+		tmphilo = &wdata->philarr[i];
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
 		// 5 micro-seconds
 		usleep(5);
 		pthread_detach(tmphilo->thread);
+		
 		i++;
 	}
 	return (1);
@@ -149,9 +185,12 @@ int	main(int argc, char *argv[])
 	// 	wattr.n_must_eat = 0;
 	if (argc < 2)
 		return (printf("Not enough arguments\n") && 0);
+
 	wattr.n_philos = ft_atoi(argv[1]);
-	// wattr.tableforks = wattr.n_philos / 2;
+
 	wattr.tableforks = 1;
+	wattr.n_forks = 1;
+	
 	pthread_mutex_init(&wattr.mutex, NULL);
 	gettimeofday(&wattr.startime, NULL);
 	wattr.startstamp = wattr.startime.tv_sec * 1000 + wattr.startime.tv_usec / 1000;
@@ -163,11 +202,14 @@ int	main(int argc, char *argv[])
 	// 	usleep(2000000);
 	// }
 
-	if (! philos_create(&wattr))
-		return (printf("Philosophers could not be created\n") && 0);
+	if (! philostable_create(&wattr))
+		return (printf("Could not create philosophers and forks\n") && 0);
 
-	wattr.PHILO_DIED = 0;
-	while (wattr.PHILO_DIED == 0)
+	if (! threads_create(&wattr))
+		return (printf("Philosophers threads could not be created\n") && 0);
+
+	wattr.philo_died = 0;
+	while (wattr.philo_died == 0)
 	{
 	}
 	//TODO: I need to unlock this to destroy it.
@@ -181,6 +223,7 @@ int	main(int argc, char *argv[])
 	// pthread_join(wattr.philarr[0].thread, NULL);
 
 	// usleep(5000);
+	free(wattr.forks);
 	free(wattr.philarr);
 	return (0);
 }
