@@ -3,7 +3,7 @@ NAME		= philo
 ## COMPILATION
 CC			= gcc
 # Compilation Flags
-CFLAGS		= -g3 -Wall -Wextra -Werror
+CFLAGS		= -g3 -Wall -Wextra -Werror -pthread
 
 
 # Removal Flags. Not sure if necessary
@@ -14,12 +14,12 @@ SRCS		= $(wildcard src/*.c)
 OBJS		= $(SRCS:.c=.o)
 
 $(NAME)		: $(OBJS)
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) 
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
-%.o		: %.c
+%.o			: %.c
 			$(CC) $(CFLAGS) -c -o $@ $<
 
-all		: $(NAME)
+all			: $(NAME)
 
 
 clean		:
