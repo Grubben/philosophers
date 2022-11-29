@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 17:59:11 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:57:45 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	statechange(t_philo *philo, int newstate)
 			//TODO: Here is where we'll do the mutex for grabbing
 			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
 			pthread_mutex_lock(&philo->wdata->mutex);
-			if (philo->wdata->tableforks > 2)
+			// if (philo->wdata->tableforks > 2)
+			if (*philo->fleft && *philo->fright)
 				return (statechange(philo, TAKEFORK));
 			pthread_mutex_unlock(&philo->wdata->mutex);
 		}
@@ -36,20 +37,24 @@ void	statechange(t_philo *philo, int newstate)
 	{
 		//TODO: This shouldn't be necessary since the checking
 		// is done in THINK state
-		if (philo->wdata->tableforks == 0)
-		{
-			printf("Error: taking a fork when there is none!\n");
-			return ;
-		}
+		// if (philo->wdata->tableforks == 0)
+		// {
+		// 	printf("Error: taking a fork when there is none!\n");
+		// 	return ;
+		// }
 		// pthread_mutex_lock(&philo->wdata->mutex);
-		philo->wdata->tableforks -= 1;
+		// philo->wdata->tableforks -= 1;
+		*philo->fleft = 0;
+		*philo->fright = 0;
+		philo->forkstaken = 2;
 		//TODO: it's ugly and unclear unlocking in a different state 
 		pthread_mutex_unlock(&philo->wdata->mutex);
 
 		print_state(philo);		
-		philo->n_forks++;
+		// philo->n_forks++;
 		
-		if (philo->n_forks == 2)
+		// if (philo->n_forks == 2)
+		if (philo->forkstaken == 2)
 			return (statechange(philo, EAT));
 		else // philo->n_forks == 1
 			//TODO: Not sure which one I want. Probably THINK
@@ -69,7 +74,10 @@ void	statechange(t_philo *philo, int newstate)
 		print_state(philo);
 		// Mutex the releasing of the fork
 		pthread_mutex_lock(&philo->wdata->mutex);
-		philo->wdata->tableforks++;
+		// philo->wdata->tableforks++;
+		*philo->fleft = 1;
+		*philo->fright = 1;
+		philo->forkstaken = 0;
 		pthread_mutex_unlock(&philo->wdata->mutex);
 		
 		philo->n_forks -= 1;
@@ -114,7 +122,7 @@ int	philostable_create(t_geninfo *wdata)
 	size_t	i;
 	t_philo	*tmphilo;
 
-	// Needs to be freed!!!
+	// Both need to be freed!!!
 	wdata->philarr = ft_calloc((wdata->n_philos), sizeof(t_philo));
 	wdata->forks = malloc((wdata->n_forks) * sizeof(int));
 	if (!wdata->philarr && wdata->forks)
@@ -128,12 +136,9 @@ int	philostable_create(t_geninfo *wdata)
 		tmphilo->id = i + 1;
 		tmphilo->wdata = wdata;
 
-		if (i < wdata->n_forks)
-		{
-			// Putting a fork there
-			wdata->forks[i] = 1;
-			tmphilo->fleft = &wdata->forks[i];
-		}
+		// Putting a fork there
+		wdata->forks[i] = 1;
+		tmphilo->fleft = &wdata->forks[i];
 
 		i++;
 	}
@@ -194,8 +199,8 @@ int	main(int argc, char *argv[])
 
 	wattr.n_philos = ft_atoi(argv[1]);
 
-	wattr.tableforks = 1;
-	wattr.n_forks = wattr.n_philos;
+	// wattr.tableforks = 1;
+	// wattr.n_forks = wattr.n_philos;
 	
 	pthread_mutex_init(&wattr.mutex, NULL);
 	gettimeofday(&wattr.startime, NULL);

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/28 16:33:15 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:56:47 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	print_state(t_philo *philo)
 {
-	// Might have to make this a wdata var because I can't destroy it
+	//TODO: Might have to make this a wdata var because I can't destroy it
 	static pthread_mutex_t printlock = PTHREAD_MUTEX_INITIALIZER;
 
 	pthread_mutex_lock(&printlock);
