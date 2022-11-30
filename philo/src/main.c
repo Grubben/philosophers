@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/30 17:48:08 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/30 18:09:11 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,11 @@ void	statechange(t_philo *philo, int newstate)
 	if (philo->state == DEAD)
 	{
 		pthread_mutex_lock(&philo->wdata->allmutex);
+		if (philo->wdata->philo_died == 1)
+		{
+			pthread_mutex_unlock(&philo->wdata->allmutex);
+			return ;
+		}
 		print_state(philo);
 		philo->wdata->philo_died = 1;
 		return ;
@@ -177,7 +182,10 @@ int	threads_create(t_geninfo *wdata)
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
 		// 5 micro-seconds
 		usleep(5);
-		pthread_detach(tmphilo->thread);
+		if (i == wdata->n_philos - 1)
+			pthread_join(tmphilo->thread, NULL);
+		else
+			pthread_detach(tmphilo->thread);
 		
 		i++;
 	}
@@ -225,10 +233,11 @@ int	main(int argc, char *argv[])
 	if (! threads_create(&wattr))
 		return (printf("Philosophers threads could not be created\n") && 0);
 
-	while (wattr.philo_died == 0)
-	{
-	}
-	pthread_mutex_destroy(&wattr.allmutex); // from the lock when he dies
+	// while (wattr.philo_died == 0)
+	// {
+	// }
+	// pthread_mutex_unlock(&wattr.allmutex); // from the lock when he dies
+	pthread_mutex_destroy(&wattr.allmutex);
 	//TODO: I need to unlock this to destroy it.
 	// But do I need to destroy it?
 	//ALERT: De-commenting this gives a seg-fault!
@@ -241,7 +250,8 @@ int	main(int argc, char *argv[])
 
 	//TODO: this gives time for all the threads to return and die
 	// most probably there's a better way
-	usleep(5000000);
+	// usleep(5000000);
+	
 	free(wattr.forks);
 	free(wattr.philarr);
 	return (0);
