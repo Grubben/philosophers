@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/30 17:07:22 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:24:13 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	statechange(t_philo *philo, int newstate)
 	{
 		philo->laststatestamp = get_timestamp(philo->wdata->startstamp);
 		print_state(philo);
+		// If one of the forks is not initialized, die!
 		if (!(philo->fleft && philo->fright))
 		{
 			usleep(philo->wdata->time_to_die);
@@ -32,8 +33,7 @@ void	statechange(t_philo *philo, int newstate)
 		{
 			//TODO: Here is where we'll do the mutex for grabbing
 			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
-			pthread_mutex_lock(&philo->wdata->allmutex);
-			// if (philo->wdata->tableforks > 2)
+			// pthread_mutex_lock(&philo->wdata->allmutex);
 			if (*philo->fleft && *philo->fright)
 				return (statechange(philo, TAKEFORK));
 			pthread_mutex_unlock(&philo->wdata->allmutex);
@@ -43,16 +43,7 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == TAKEFORK)
 	{
-		//TODO: This shouldn't be necessary since the checking
-		// is done in THINK state
-		// if (philo->wdata->tableforks == 0)
-		// {
-		// 	printf("Error: taking a fork when there is none!\n");
-		// 	return ;
-		// }
-		// pthread_mutex_lock(&philo->wdata->allmutex);
-		// philo->wdata->tableforks -= 1;
-		
+		print_state(philo);		
 		//TODO: mutex only these forks specifically
 		*philo->fleft = 0;
 		*philo->fright = 0;
@@ -60,10 +51,6 @@ void	statechange(t_philo *philo, int newstate)
 		//TODO: it's ugly and unclear unlocking in a different state 
 		pthread_mutex_unlock(&philo->wdata->allmutex);
 
-		print_state(philo);		
-		// philo->n_forks++;
-		
-		// if (philo->n_forks == 2)
 		if (philo->forkstaken == 2)
 			return (statechange(philo, EAT));
 		else // philo->n_forks == 1
@@ -90,8 +77,6 @@ void	statechange(t_philo *philo, int newstate)
 		philo->forkstaken = 0;
 		pthread_mutex_unlock(&philo->wdata->allmutex);
 		
-		// philo->n_forks -= 1;
-		// if (philo->n_forks > 0)
 		philo->forkstaken = 0;
 		if (philo->forkstaken > 0)
 			return (statechange(philo, RELEASEFORK));
@@ -138,7 +123,7 @@ int	philostable_create(t_geninfo *wdata)
 	wdata->philarr = malloc((wdata->n_philos) * sizeof(t_philo));
 	// Initializing philarr to 0, so everything is 0
 	memset(wdata->philarr, 0, wdata->n_philos * sizeof(t_philo));
-	wdata->forks = malloc((wdata->n_forks) * sizeof(int));
+	wdata->forks = malloc((wdata->n_forks) * sizeof(t_fork));
 	if (!wdata->philarr && wdata->forks)
 		return (0);
 
@@ -151,7 +136,8 @@ int	philostable_create(t_geninfo *wdata)
 		tmphilo->wdata = wdata;
 
 		// Putting a fork there
-		wdata->forks[i] = 1;
+		// wdata->forks[i] = 1;
+		fork_init(&wdata->forks[i]);
 		tmphilo->fleft = &wdata->forks[i];
 
 		i++;
@@ -200,6 +186,7 @@ int	main(int argc, char *argv[])
 
 	// if (argc < 5 || argc > 6)
 	// 	return (0);
+	memset(&wattr, 0, sizeof(t_geninfo));
 	// wattr.time_to_die = ft_atoi(argv[2]);
 	wattr.time_to_die = 3000;
 	// wattr.time_to_eat = ft_atoi(argv[3]);

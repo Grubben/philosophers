@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/30 17:09:25 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:19:18 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ enum e_PHILOSTATE
 	DEAD,
 };
 
+typedef struct s_fork
+{
+	int	set;
+	pthread_mutex_t	lock;
+}				t_fork;
+
 typedef struct s_philo		t_philo;
 typedef struct s_geninfo	t_geninfo;
 
@@ -43,8 +49,8 @@ struct s_philo
 	int			state; // e_PHILOSTATE
 	
 	int			forkstaken;
-	int			*fleft;
-	int			*fright;
+	t_fork		*fleft;
+	t_fork		*fright;
 
 	suseconds_t	laststatestamp;
 
@@ -58,7 +64,7 @@ struct s_geninfo
 	t_philo			*philarr;
 
 	size_t			n_forks;
-	int				*forks;
+	t_fork			*forks;
 
 	long			time_to_die;
 	size_t			time_to_eat;
@@ -72,6 +78,9 @@ struct s_geninfo
 
 	int				philo_died;
 };
+
+/*	FORKS	*/
+int	fork_init(t_fork *fork);
 
 /*	TIME	*/
 suseconds_t	get_time(struct timeval *startime);
