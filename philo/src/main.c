@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/30 17:24:13 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:28:17 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ void	statechange(t_philo *philo, int newstate)
 		{
 			//TODO: Here is where we'll do the mutex for grabbing
 			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
-			// pthread_mutex_lock(&philo->wdata->allmutex);
 			if (*philo->fleft && *philo->fright)
 				return (statechange(philo, TAKEFORK));
-			pthread_mutex_unlock(&philo->wdata->allmutex);
 		}
 		// printf("Philosopher has died!\n");
 		return (statechange(philo, DEAD)); // Philosopher has died!
@@ -49,7 +47,6 @@ void	statechange(t_philo *philo, int newstate)
 		*philo->fright = 0;
 		philo->forkstaken = 2;
 		//TODO: it's ugly and unclear unlocking in a different state 
-		pthread_mutex_unlock(&philo->wdata->allmutex);
 
 		if (philo->forkstaken == 2)
 			return (statechange(philo, EAT));
@@ -70,12 +67,9 @@ void	statechange(t_philo *philo, int newstate)
 	{
 		print_state(philo);
 		// Mutex the releasing of the fork
-		pthread_mutex_lock(&philo->wdata->allmutex);
-		// philo->wdata->tableforks++;
 		*philo->fleft = 1;
 		*philo->fright = 1;
 		philo->forkstaken = 0;
-		pthread_mutex_unlock(&philo->wdata->allmutex);
 		
 		philo->forkstaken = 0;
 		if (philo->forkstaken > 0)
@@ -224,7 +218,7 @@ int	main(int argc, char *argv[])
 	while (wattr.philo_died == 0)
 	{
 	}
-	pthread_mutex_destroy(&wattr.allmutex);
+	pthread_mutex_destroy(&wattr.allmutex); // from the lock when he dies
 	//TODO: I need to unlock this to destroy it.
 	// But do I need to destroy it?
 	//ALERT: De-commenting this gives a seg-fault!
