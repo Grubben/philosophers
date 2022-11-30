@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/29 15:57:45 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:07:22 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,29 @@
 
 void	statechange(t_philo *philo, int newstate)
 {
+	//TODO: Make sure no mutex is locked
+	if (philo->wdata->philo_died == 1)
+		return ;
 	philo->state = newstate;
 	if (philo->state == THINK)
 	{
 		philo->laststatestamp = get_timestamp(philo->wdata->startstamp);
-		// printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
 		print_state(philo);
+		if (!(philo->fleft && philo->fright))
+		{
+			usleep(philo->wdata->time_to_die);
+			return (statechange(philo, DEAD));
+		}
+		// printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
 		while (get_timestamp(philo->wdata->startstamp) - philo->laststatestamp < philo->wdata->time_to_die)
 		{
 			//TODO: Here is where we'll do the mutex for grabbing
 			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
-			pthread_mutex_lock(&philo->wdata->mutex);
+			pthread_mutex_lock(&philo->wdata->allmutex);
 			// if (philo->wdata->tableforks > 2)
 			if (*philo->fleft && *philo->fright)
 				return (statechange(philo, TAKEFORK));
-			pthread_mutex_unlock(&philo->wdata->mutex);
+			pthread_mutex_unlock(&philo->wdata->allmutex);
 		}
 		// printf("Philosopher has died!\n");
 		return (statechange(philo, DEAD)); // Philosopher has died!
@@ -42,13 +50,15 @@ void	statechange(t_philo *philo, int newstate)
 		// 	printf("Error: taking a fork when there is none!\n");
 		// 	return ;
 		// }
-		// pthread_mutex_lock(&philo->wdata->mutex);
+		// pthread_mutex_lock(&philo->wdata->allmutex);
 		// philo->wdata->tableforks -= 1;
+		
+		//TODO: mutex only these forks specifically
 		*philo->fleft = 0;
 		*philo->fright = 0;
 		philo->forkstaken = 2;
 		//TODO: it's ugly and unclear unlocking in a different state 
-		pthread_mutex_unlock(&philo->wdata->mutex);
+		pthread_mutex_unlock(&philo->wdata->allmutex);
 
 		print_state(philo);		
 		// philo->n_forks++;
@@ -73,15 +83,17 @@ void	statechange(t_philo *philo, int newstate)
 	{
 		print_state(philo);
 		// Mutex the releasing of the fork
-		pthread_mutex_lock(&philo->wdata->mutex);
+		pthread_mutex_lock(&philo->wdata->allmutex);
 		// philo->wdata->tableforks++;
 		*philo->fleft = 1;
 		*philo->fright = 1;
 		philo->forkstaken = 0;
-		pthread_mutex_unlock(&philo->wdata->mutex);
+		pthread_mutex_unlock(&philo->wdata->allmutex);
 		
-		philo->n_forks -= 1;
-		if (philo->n_forks > 0)
+		// philo->n_forks -= 1;
+		// if (philo->n_forks > 0)
+		philo->forkstaken = 0;
+		if (philo->forkstaken > 0)
 			return (statechange(philo, RELEASEFORK));
 		else // philo->n_forks == 0
 			return (statechange(philo, SLEEP));
@@ -95,7 +107,7 @@ void	statechange(t_philo *philo, int newstate)
 	}
 	if (philo->state == DEAD)
 	{
-		pthread_mutex_lock(&philo->wdata->mutex);
+		pthread_mutex_lock(&philo->wdata->allmutex);
 		print_state(philo);
 		philo->wdata->philo_died = 1;
 		return ;
@@ -123,7 +135,9 @@ int	philostable_create(t_geninfo *wdata)
 	t_philo	*tmphilo;
 
 	// Both need to be freed!!!
-	wdata->philarr = ft_calloc((wdata->n_philos), sizeof(t_philo));
+	wdata->philarr = malloc((wdata->n_philos) * sizeof(t_philo));
+	// Initializing philarr to 0, so everything is 0
+	memset(wdata->philarr, 0, wdata->n_philos * sizeof(t_philo));
 	wdata->forks = malloc((wdata->n_forks) * sizeof(int));
 	if (!wdata->philarr && wdata->forks)
 		return (0);
@@ -198,11 +212,12 @@ int	main(int argc, char *argv[])
 		return (printf("Not enough arguments\n") && 0);
 
 	wattr.n_philos = ft_atoi(argv[1]);
+	wattr.philo_died = 0;
 
 	// wattr.tableforks = 1;
 	// wattr.n_forks = wattr.n_philos;
 	
-	pthread_mutex_init(&wattr.mutex, NULL);
+	pthread_mutex_init(&wattr.allmutex, NULL);
 	gettimeofday(&wattr.startime, NULL);
 	wattr.startstamp = wattr.startime.tv_sec * 1000 + wattr.startime.tv_usec / 1000;
 
@@ -219,21 +234,23 @@ int	main(int argc, char *argv[])
 	if (! threads_create(&wattr))
 		return (printf("Philosophers threads could not be created\n") && 0);
 
-	wattr.philo_died = 0;
 	while (wattr.philo_died == 0)
 	{
 	}
+	pthread_mutex_destroy(&wattr.allmutex);
 	//TODO: I need to unlock this to destroy it.
 	// But do I need to destroy it?
 	//ALERT: De-commenting this gives a seg-fault!
 	// why??? So it's still locked when program ends
-	// pthread_mutex_unlock(&wattr.mutex);
+	// pthread_mutex_unlock(&wattr.allmutex);
 
 	// This is bad. Just using while learning
 	// pthread_join(wattr.philarr[wattr.n_philos - 1].thread, NULL);
 	// pthread_join(wattr.philarr[0].thread, NULL);
 
-	// usleep(5000);
+	//TODO: this gives time for all the threads to return and die
+	// most probably there's a better way
+	usleep(5000000);
 	free(wattr.forks);
 	free(wattr.philarr);
 	return (0);

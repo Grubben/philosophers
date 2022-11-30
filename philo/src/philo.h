@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/29 15:49:00 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:09:25 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+
+# include <string.h>
 
 # include <pthread.h>
 # include <sys/time.h>
@@ -40,8 +42,6 @@ struct s_philo
 
 	int			state; // e_PHILOSTATE
 	
-	// int			n_forks; //TODO: remove!
-	
 	int			forkstaken;
 	int			*fleft;
 	int			*fright;
@@ -59,14 +59,13 @@ struct s_geninfo
 
 	size_t			n_forks;
 	int				*forks;
-	// size_t			tableforks; //TODO: remove!
 
 	long			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			n_must_eat;
 
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	allmutex;
 
 	struct timeval	startime;
 	suseconds_t		startstamp;
