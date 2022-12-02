@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/30 17:19:18 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:05:34 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ enum e_PHILOSTATE
 
 typedef struct s_fork
 {
-	int	set;
+	int	setb;
 	pthread_mutex_t	lock;
 }				t_fork;
 
@@ -81,6 +81,8 @@ struct s_geninfo
 
 /*	FORKS	*/
 int	fork_init(t_fork *fork);
+
+int	forks_destroy(t_fork *forks, size_t n_forks);
 
 /*	TIME	*/
 suseconds_t	get_time(struct timeval *startime);
