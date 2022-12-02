@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 17:15:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/02 17:16:54 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:24:19 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	forks_destroy(t_fork *forks, size_t n_forks)
 	while (i < n_forks)
 	{
 		pthread_mutex_destroy(&forks[i].lock);
+		i++;
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/02 17:16:03 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:27:27 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	philostable_create(t_geninfo *wdata)
 	// Initializing philarr to 0, so everything is 0
 	memset(wdata->philarr, 0, wdata->n_philos * sizeof(t_philo));
 	wdata->forks = malloc((wdata->n_forks) * sizeof(t_fork));
-	if (!wdata->philarr && wdata->forks)
+	if (! wdata->philarr && wdata->forks)
 		return (0);
 
 	i = 0;
@@ -188,7 +188,7 @@ int	threads_create(t_geninfo *wdata)
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
 		// 5 micro-seconds
 		usleep(5);
-		if (i == 0)
+		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
 		else
 			pthread_detach(tmphilo->thread);
@@ -218,9 +218,7 @@ int	main(int argc, char *argv[])
 
 	wattr.n_philos = ft_atoi(argv[1]);
 	wattr.philo_died = 0;
-
-	// wattr.tableforks = 1;
-	// wattr.n_forks = wattr.n_philos;
+	wattr.n_forks = wattr.n_philos;
 	
 	pthread_mutex_init(&wattr.allmutex, NULL);
 	gettimeofday(&wattr.startime, NULL);
