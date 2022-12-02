@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/02 17:05:34 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/02 18:40:06 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ struct s_geninfo
 int	fork_init(t_fork *fork);
 
 int	forks_destroy(t_fork *forks, size_t n_forks);
+
+/*	PHILOSOPHER	*/
+int	philo_fork_lock(t_philo *philo);
+
+int	philo_fork_unlock(t_philo *philo);
 
 /*	TIME	*/
 suseconds_t	get_time(struct timeval *startime);
