@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/02 18:41:30 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/06 12:03:11 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 void	statechange(t_philo *philo, int newstate)
 {
 	//TODO: Make sure no mutex is locked
+	pthread_mutex_lock(&philo->wdata->allmutex);
 	if (philo->wdata->philo_died == 1)
+	{
+		pthread_mutex_unlock(&philo->wdata->allmutex);
 		return ;
+	}
+	pthread_mutex_unlock(&philo->wdata->allmutex);
 	philo->state = newstate;
 	if (philo->state == THINK)
 	{
-		philo->laststatestamp = get_timestamp(philo->wdata->startstamp);
 		print_state(philo);
+		philo->laststatestamp = get_timestamp(philo->wdata->startstamp);
 		// If one of the forks is not initialized, die!
 		if (!(philo->fleft && philo->fright))
 		{
@@ -53,11 +58,12 @@ void	statechange(t_philo *philo, int newstate)
 		//TODO: mutex only these forks specifically
 		philo->fleft->setb = 0;
 		philo->fright->setb = 0;
-		philo->forkstaken = 2;
 		//TODO: it's ugly and unclear unlocking in a different state 
 		// pthread_mutex_unlock(&philo->fleft->lock);
 		// pthread_mutex_unlock(&philo->fright->lock);
 		philo_fork_unlock(philo);
+		
+		philo->forkstaken = 2;
 		
 		if (philo->forkstaken == 2)
 			return (statechange(philo, EAT));
@@ -88,6 +94,7 @@ void	statechange(t_philo *philo, int newstate)
 		philo_fork_unlock(philo);
 		
 		philo->forkstaken = 0;
+		
 		if (philo->forkstaken > 0)
 			return (statechange(philo, RELEASEFORK));
 		else // philo->n_forks == 0
@@ -188,7 +195,7 @@ int	threads_create(t_geninfo *wdata)
 		tmphilo = &wdata->philarr[i];
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
 		// 5 micro-seconds
-		usleep(5);
+		usleep(50);
 		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
 		else
@@ -244,7 +251,7 @@ int	main(int argc, char *argv[])
 	// if (wattr.n_philos == 1)
 		// pthread_mutex_unlock(&wattr.allmutex); // from the lock when he dies
 	printf("PhiloDied: %d\n", wattr.philo_died);
-	pthread_mutex_destroy(&wattr.allmutex);
+	// pthread_mutex_destroy(&wattr.allmutex);
 	//TODO: I need to unlock this to destroy it.
 	// But do I need to destroy it?
 	//ALERT: De-commenting this gives a seg-fault!
