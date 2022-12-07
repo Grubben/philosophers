@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/06 12:03:11 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/07 14:59:09 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,8 +198,8 @@ int	threads_create(t_geninfo *wdata)
 		usleep(50);
 		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
-		else
-			pthread_detach(tmphilo->thread);
+		// else
+		// 	pthread_detach(tmphilo->thread);
 	
 		i++;
 	}
@@ -228,7 +228,9 @@ int	main(int argc, char *argv[])
 	wattr.philo_died = 0;
 	wattr.n_forks = wattr.n_philos;
 	
+	pthread_mutex_init(&wattr.printlock, NULL);
 	pthread_mutex_init(&wattr.allmutex, NULL);
+	
 	gettimeofday(&wattr.startime, NULL);
 	wattr.startstamp = wattr.startime.tv_sec * 1000 + wattr.startime.tv_usec / 1000;
 
@@ -251,7 +253,9 @@ int	main(int argc, char *argv[])
 	// if (wattr.n_philos == 1)
 		// pthread_mutex_unlock(&wattr.allmutex); // from the lock when he dies
 	printf("PhiloDied: %d\n", wattr.philo_died);
-	// pthread_mutex_destroy(&wattr.allmutex);
+	threads_join(&wattr);
+	pthread_mutex_destroy(&wattr.allmutex);
+	pthread_mutex_destroy(&wattr.printlock);	
 	//TODO: I need to unlock this to destroy it.
 	// But do I need to destroy it?
 	//ALERT: De-commenting this gives a seg-fault!

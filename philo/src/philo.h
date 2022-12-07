@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/02 18:40:06 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:58:32 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ struct s_geninfo
 	size_t			n_must_eat;
 
 	pthread_mutex_t	allmutex;
+	pthread_mutex_t	printlock;
 
 	struct timeval	startime;
 	suseconds_t		startstamp;
@@ -88,6 +89,9 @@ int	forks_destroy(t_fork *forks, size_t n_forks);
 int	philo_fork_lock(t_philo *philo);
 
 int	philo_fork_unlock(t_philo *philo);
+
+/*	THREADS	*/
+int	threads_join(t_geninfo *wdata);
 
 /*	TIME	*/
 suseconds_t	get_time(struct timeval *startime);
