@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 15:13:24 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:40:56 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	statechange(t_philo *philo, int newstate)
 {
 	//TODO: Make sure no mutex is locked
-	pthread_mutex_lock(&philo->wdata->allmutex);
+	// pthread_mutex_lock(&philo->wdata->allmutex);
 	if (philo->wdata->philo_died == 1)
 	{
-		pthread_mutex_unlock(&philo->wdata->allmutex);
+		// pthread_mutex_unlock(&philo->wdata->allmutex);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->wdata->allmutex);
+	// pthread_mutex_unlock(&philo->wdata->allmutex);
 	philo->state = newstate;
 	if (philo->state == THINK)
 	{
@@ -36,6 +36,7 @@ void	statechange(t_philo *philo, int newstate)
 		// printf("%ld %ld is thinking\n", get_time(&philo->wdata->startime), philo->id);
 		while (get_timestamp(philo->wdata->startstamp) - philo->laststatestamp < philo->wdata->time_to_die)
 		{
+			// printf("LAST MEAL of %ld:%ld__\n", philo->id, get_timestamp(philo->wdata->startstamp) - philo->lastmeal);
 			//TODO: Here is where we'll do the mutex for grabbing
 			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
 			// pthread_mutex_lock(&philo->fleft->lock);
@@ -75,8 +76,9 @@ void	statechange(t_philo *philo, int newstate)
 	if (philo->state == EAT)
 	{
 		print_state(philo);
-		// usleep(philo->wdata->time_to_eat);
-		usleep(2000000);
+		philo->lastmeal = get_timestamp(philo->wdata->startstamp);
+		usleep(philo->wdata->time_to_eat);
+		// usleep(2000000);
 		//TODO: Must let go of the forks!
 		return (statechange(philo, RELEASEFORK));
 	}
@@ -103,8 +105,8 @@ void	statechange(t_philo *philo, int newstate)
 	if (philo->state == SLEEP)
 	{
 		print_state(philo);
-		// usleep(philo->wdata->time_to_sleep);
-		usleep(2000000);
+		usleep(philo->wdata->time_to_sleep);
+		// usleep(2000000);
 		return (statechange(philo, THINK));
 	}
 	if (philo->state == DEAD)
@@ -127,21 +129,24 @@ int	main(int argc, char *argv[])
 {
 	t_geninfo		wattr;
 
-	// if (argc < 5 || argc > 6)
+	if (argc < 5 || argc > 6)
 	// 	return (0);
+	// if (argc < 2)
+		return (printf("Not enough arguments\n") && 0);
+	
 	memset(&wattr, 0, sizeof(t_geninfo));
-	// wattr.time_to_die = ft_atoi(argv[2]);
-	wattr.time_to_die = 5000;
-	// wattr.time_to_eat = ft_atoi(argv[3]);
-	// wattr.time_to_sleep = ft_atoi(argv[4]);
+	
+	wattr.n_philos = ft_atoi(argv[1]);
+	// Multiplying by 1000 since it's given in miliseconds
+	wattr.time_to_die = ft_atoi(argv[2]) * 1000;
+	// wattr.time_to_die = 5000;
+	wattr.time_to_eat = ft_atoi(argv[3]) * 1000;
+	wattr.time_to_sleep = ft_atoi(argv[4]) * 1000;
 	// if (argc == 6)
 	// 	wattr.n_must_eat = ft_atoi(argv[5]);
 	// else
 	// 	wattr.n_must_eat = 0;
-	if (argc < 2)
-		return (printf("Not enough arguments\n") && 0);
 
-	wattr.n_philos = ft_atoi(argv[1]);
 	wattr.philo_died = 0;
 	wattr.n_forks = wattr.n_philos;
 	

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 18:35:39 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 15:10:20 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:07:56 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	*philo_go(void *arg)
 	printf("Philosopher %ld Active\n", philo->id);
 	
 	philo->laststatestamp = get_time(&philo->wdata->startime);
+	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
 	statechange(philo, THINK);
 	
 	return (NULL);

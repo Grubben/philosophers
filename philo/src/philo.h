@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 15:11:49 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:36:35 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct s_philo
 	t_fork		*fleft;
 	t_fork		*fright;
 
+	suseconds_t lastmeal;
 	suseconds_t	laststatestamp;
 
 	t_geninfo	*wdata;

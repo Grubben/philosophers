@@ -1,7 +1,7 @@
 NAME		= philo
 
 ## COMPILATION
-CC			= gcc
+CC			= cc
 # Compilation Flags
 CFLAGS		= -g3 -Wall -Wextra -Werror -pthread -fsanitize=thread
 
