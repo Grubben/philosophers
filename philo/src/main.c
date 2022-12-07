@@ -6,12 +6,12 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 16:40:56 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 18:35:29 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
+/*
 void	statechange(t_philo *philo, int newstate)
 {
 	//TODO: Make sure no mutex is locked
@@ -41,13 +41,13 @@ void	statechange(t_philo *philo, int newstate)
 			// tableforks. So protecting the call to statechange(philo, TAKEFORK)
 			// pthread_mutex_lock(&philo->fleft->lock);
 			// pthread_mutex_lock(&philo->fright->lock);
-			philo_fork_lock(philo);
+			philo_forks_lock(philo);
 			if (philo->fleft->setb && philo->fright->setb)
 				return (statechange(philo, TAKEFORK));
 			// // One or both the forks aren't set on the table
 			// pthread_mutex_unlock(&philo->fleft->lock);
 			// pthread_mutex_unlock(&philo->fright->lock);
-			philo_fork_unlock(philo);
+			philo_forks_unlock(philo);
 
 		}
 		// printf("Philosopher has died!\n");
@@ -62,7 +62,7 @@ void	statechange(t_philo *philo, int newstate)
 		//TODO: it's ugly and unclear unlocking in a different state 
 		// pthread_mutex_unlock(&philo->fleft->lock);
 		// pthread_mutex_unlock(&philo->fright->lock);
-		philo_fork_unlock(philo);
+		philo_forks_unlock(philo);
 		
 		philo->forkstaken = 2;
 		
@@ -88,12 +88,12 @@ void	statechange(t_philo *philo, int newstate)
 		// Mutex the releasing of the fork
 		// pthread_mutex_lock(&philo->fleft->lock);
 		// pthread_mutex_lock(&philo->fright->lock);
-		philo_fork_lock(philo);
+		philo_forks_lock(philo);
 		philo->fleft->setb = 1;
 		philo->fright->setb = 1;
 		// pthread_mutex_unlock(&philo->fleft->lock);
 		// pthread_mutex_unlock(&philo->fright->lock);
-		philo_fork_unlock(philo);
+		philo_forks_unlock(philo);
 		
 		philo->forkstaken = 0;
 		
@@ -123,7 +123,7 @@ void	statechange(t_philo *philo, int newstate)
 		return ;
 	}
 }
-
+*/
 
 int	main(int argc, char *argv[])
 {

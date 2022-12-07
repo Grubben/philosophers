@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 15:36:35 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 18:31:43 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,17 @@ struct s_geninfo
 /*	MAIN	*/
 void	statechange(t_philo *philo, int newstate);
 
+/*	STATES	*/
+void	sttchng(t_philo *philo);
+
 /*	FORKS	*/
 int	fork_init(t_fork *fork);
 
 int	forks_destroy(t_fork *forks, size_t n_forks);
 
-int	philo_fork_lock(t_philo *philo);
+int	philo_forks_lock(t_philo *philo);
 
-int	philo_fork_unlock(t_philo *philo);
+int	philo_forks_unlock(t_philo *philo);
 
 /*	PHILOSOPHER	*/
 void	*philo_go(void *arg);
@@ -109,7 +112,7 @@ suseconds_t	get_time(struct timeval *startime);
 suseconds_t	get_timestamp(suseconds_t startstamp);
 
 /*	PRINTS	*/
-void		print_state(t_philo *philo);
+void		print_state(t_philo *philo, int state);
 
 /*  UTILS   */
 int			ft_atoi(const char *str);
