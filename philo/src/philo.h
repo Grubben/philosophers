@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 14:58:32 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:11:49 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,26 @@ struct s_geninfo
 	int				philo_died;
 };
 
+/*	MAIN	*/
+void	statechange(t_philo *philo, int newstate);
+
 /*	FORKS	*/
 int	fork_init(t_fork *fork);
 
 int	forks_destroy(t_fork *forks, size_t n_forks);
 
-/*	PHILOSOPHER	*/
 int	philo_fork_lock(t_philo *philo);
 
 int	philo_fork_unlock(t_philo *philo);
 
+/*	PHILOSOPHER	*/
+void	*philo_go(void *arg);
+
+int	philostable_create(t_geninfo *wdata);
+
 /*	THREADS	*/
+int	threads_create(t_geninfo *wdata);
+
 int	threads_join(t_geninfo *wdata);
 
 /*	TIME	*/
