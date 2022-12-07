@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/30 17:32:47 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:40:55 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	print_state(t_philo *philo)
 {
 	//TODO: use the allmutex for this. might as well
 	//TODO: Might have to make this a wdata var because I can't destroy it
-	static pthread_mutex_t printlock = PTHREAD_MUTEX_INITIALIZER;
+	// static pthread_mutex_t printlock = PTHREAD_MUTEX_INITIALIZER;
 
-	pthread_mutex_lock(&printlock);
+	pthread_mutex_lock(&philo->wdata->printlock);
 	if (philo->state == THINK)
 	{
 		printf("%ld %ld is thinking\n", get_timestamp(philo->wdata->startstamp), philo->id);
@@ -45,5 +45,5 @@ void	print_state(t_philo *philo)
 	{
 		printf("%ld %ld died\n", get_timestamp(philo->wdata->startstamp), philo->id);
 	}
-	pthread_mutex_unlock(&printlock);
+	pthread_mutex_unlock(&philo->wdata->printlock);
 }
