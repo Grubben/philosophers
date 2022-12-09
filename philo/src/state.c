@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/09 11:06:13 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/09 13:25:26 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,36 @@
 // }
 
 
-void	philo_eat(t_philo *philo)
+void	philo_takeneat(t_philo *philo)
 {
 	
 	//TODO: Careful here when there is only one philosopher
 	philo->fleft->setb = 0;
 	philo->fright->setb = 0;
 	philo_forks_unlock(philo);
+	
 	philo->forkstaken = 2;
 	
 	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
 
+	philo->state = EAT;
 	print_state(philo, EAT);
 	usleep(philo->wdata->time_to_eat);
+	philo->state = RELEASEFORK;
 }
 
-void	philo_sleep(t_philo *philo)
+void	philo_relnsleep(t_philo *philo)
 {
+	// Realese the forks
 	philo_forks_lock(philo);
 	philo->fleft->setb = 1;
 	philo->fright->setb = 1;
 	philo_forks_unlock(philo);
 
+	philo->state = SLEEP;
 	print_state(philo, SLEEP);
 	usleep(philo->wdata->time_to_sleep);
+	philo->state = THINK;
 	print_state(philo, THINK);
 }
 
@@ -78,16 +84,29 @@ void	sttchng(t_philo *philo)
 
 		// printf("%ld\n", get_timestamp(philo->wdata->startstamp));
 		// printf("%ld\n", philo->lastmeal);
-		philo_forks_lock(philo);
-		if (philo->fleft->setb && philo->fright->setb)
+
+		if (philo->state == THINK)
 		{
-			philo_eat(philo);
-			philo_sleep(philo);
+			philo_forks_lock(philo);
+			if (philo->fleft->setb && philo->fright->setb)
+			{
+				philo_takeneat(philo);
+				// philo_relnsleep(philo);
+			}
+			else
+				philo_forks_unlock(philo);
+			continue ;
 		}
-		else
+		if (philo->state == RELEASEFORK)
 		{
-			philo_forks_unlock(philo);
+			philo_relnsleep(philo);
 			// usleep(philo->wdata->time_to_eat / 2);
+		// 	continue ;
 		}
+		// if (philo->state == EAT)
+		// {
+		// 	philo_relnsleep(philo);
+		// 	continue ;
+		// }
 	}
 }

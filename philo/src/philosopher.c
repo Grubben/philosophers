@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 18:35:39 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 17:08:46 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/09 13:17:36 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	*philo_go(void *arg)
 	
 	philo->laststatestamp = get_time(&philo->wdata->startime);
 	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
+
+	philo->state = THINK;
+
 	// statechange(philo, THINK);
 	sttchng(philo);
 	
