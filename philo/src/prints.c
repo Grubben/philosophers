@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/12 14:59:55 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/12 17:44:23 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 void	print_state(t_philo *philo, int state)
 {
 	//TODO: use the allmutex for this. might as well
-	//TODO: Might have to make this a wdata var because I can't destroy it
-	// static pthread_mutex_t printlock = PTHREAD_MUTEX_INITIALIZER;
-
+	
 	pthread_mutex_lock(&philo->wdata->printlock);
 	if (state == THINK)
 	{

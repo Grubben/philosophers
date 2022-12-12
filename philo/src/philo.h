@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/12 15:22:03 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/12 18:33:56 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	statechange(t_philo *philo, int newstate);
 /*	STATES	*/
 void	sttchng(t_philo *philo);
 
+void	philo_autodie(t_philo *philo);
+
 void	philo_die(t_philo *philo);
 
 /*	FORKS	*/
@@ -113,7 +115,7 @@ suseconds_t	get_time(struct timeval *startime);
 
 suseconds_t	get_timestamp(suseconds_t startstamp);
 
-void	myusleep(t_philo *philo, suseconds_t time_to_x);
+int	myusleep(t_philo *philo, suseconds_t time_to_x);
 
 /*	PRINTS	*/
 void		print_state(t_philo *philo, int state);
