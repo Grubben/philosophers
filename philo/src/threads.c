@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 15:09:26 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:00:14 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ int	threads_create(t_geninfo *wdata)
 	size_t	i;
 	t_philo	*tmphilo;
 	// Create philo-threads
+	gettimeofday(&wdata->startime, NULL);
+	wdata->startstamp = wdata->startime.tv_sec * 1000 + wdata->startime.tv_usec / 1000;
 	i = 0;
 	while (i < wdata->n_philos)
 	{
 		tmphilo = &wdata->philarr[i];
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
 		// 5 micro-seconds
-		usleep(50);
+		// usleep(5);
 		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
 		// else

@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 18:35:39 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/12 18:39:27 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/12 18:55:32 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ void	*philo_go(void *arg)
 	// Init of philo
 	philo = (t_philo *)arg;
 
-	printf("Philosopher %ld Active\n", philo->id);
+	// printf("Philosopher %ld Active\n", philo->id);
 	
 	philo->laststatestamp = get_time(&philo->wdata->startime);
 	//TODO: lastmeal should be the same for all 
-	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
+	// philo->lastmeal = get_timestamp(philo->wdata->startstamp);
+	philo->lastmeal = philo->wdata->startstamp;
 
 	// statechange(philo, THINK);
 	sttchng(philo);
