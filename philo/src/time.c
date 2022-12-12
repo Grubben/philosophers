@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:29:56 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/09 13:41:17 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:31:51 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,26 @@ suseconds_t	get_timestamp(suseconds_t startstamp)
 }
 
 /*Implementing my own usleep*/
-void	myusleep(t_philo *philo)
+void	myusleep(t_philo *philo, suseconds_t time_to_x)
 {
-	
+	suseconds_t	sleepstart;
+	suseconds_t	now;
+
+	sleepstart = get_timestamp(philo->wdata->startstamp);
+	now = get_timestamp(philo->wdata->startstamp);
+	while (now - sleepstart < time_to_x)
+	{
+		//TODO: Massively rework this section!
+		if (now - sleepstart > philo->wdata->time_to_die)
+		{
+			// Realese the forks
+			philo_forks_lock(philo);
+			philo->fleft->setb = 1;
+			philo->fright->setb = 1;
+			philo_forks_unlock(philo);
+			philo_die(philo);
+		}
+		now = get_timestamp(philo->wdata->startstamp);
+	}
+	printf("Done eating!\n");
 }
