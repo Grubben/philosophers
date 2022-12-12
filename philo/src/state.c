@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/09 13:25:26 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:06:53 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	philo_takeneat(t_philo *philo)
 
 	philo->state = EAT;
 	print_state(philo, EAT);
-	usleep(philo->wdata->time_to_eat);
+	// usleep(philo->wdata->time_to_eat);
+	myusleep(philo, philo->wdata->time_to_eat);
 	philo->state = RELEASEFORK;
 }
 

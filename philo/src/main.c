@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 18:35:29 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:23:49 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,10 +138,10 @@ int	main(int argc, char *argv[])
 	
 	wattr.n_philos = ft_atoi(argv[1]);
 	// Multiplying by 1000 since it's given in miliseconds
-	wattr.time_to_die = ft_atoi(argv[2]) * 1000;
+	wattr.time_to_die = ft_atoi(argv[2]);// * 1000;
 	// wattr.time_to_die = 5000;
-	wattr.time_to_eat = ft_atoi(argv[3]) * 1000;
-	wattr.time_to_sleep = ft_atoi(argv[4]) * 1000;
+	wattr.time_to_eat = ft_atoi(argv[3]);// * 1000;
+	wattr.time_to_sleep = ft_atoi(argv[4]);// * 1000;
 	// if (argc == 6)
 	// 	wattr.n_must_eat = ft_atoi(argv[5]);
 	// else

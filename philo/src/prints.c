@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prints.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/09 13:38:09 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:59:55 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_state(t_philo *philo, int state)
 	pthread_mutex_unlock(&philo->wdata->printlock);
 }
 
-void   print_autostate(t_philo *philo, int state)
+void   print_autostate(t_philo *philo)
 { 
 	pthread_mutex_lock(&philo->wdata->printlock);
 	if (philo->state == THINK)
@@ -76,3 +76,4 @@ void   print_autostate(t_philo *philo, int state)
 		printf("%ld %ld died\n", get_timestamp(philo->wdata->startstamp), philo->id);
 	}
 	pthread_mutex_unlock(&philo->wdata->printlock);
+}

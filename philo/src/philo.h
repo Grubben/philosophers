@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 18:31:43 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:22:03 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ struct s_geninfo
 	size_t			n_forks;
 	t_fork			*forks;
 
-	long			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
+	suseconds_t			time_to_die;
+	suseconds_t			time_to_eat;
+	suseconds_t			time_to_sleep;
 	size_t			n_must_eat;
 
 	pthread_mutex_t	allmutex;
@@ -86,6 +86,8 @@ void	statechange(t_philo *philo, int newstate);
 
 /*	STATES	*/
 void	sttchng(t_philo *philo);
+
+void	philo_die(t_philo *philo);
 
 /*	FORKS	*/
 int	fork_init(t_fork *fork);
@@ -110,6 +112,8 @@ int	threads_join(t_geninfo *wdata);
 suseconds_t	get_time(struct timeval *startime);
 
 suseconds_t	get_timestamp(suseconds_t startstamp);
+
+void	myusleep(t_philo *philo, suseconds_t time_to_x);
 
 /*	PRINTS	*/
 void		print_state(t_philo *philo, int state);
