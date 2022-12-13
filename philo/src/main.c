@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:39:29 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:41:15 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,6 @@ int	main(int argc, char *argv[])
 	gettimeofday(&wattr.startime, NULL);
 	wattr.startstamp = wattr.startime.tv_sec * 1000 + wattr.startime.tv_usec / 1000;
 
-	// while (1)
-	// {
-	// 	printf("%ld__", get_time(&wattr.startime));
-	// 	printf("%ld\n", get_timestamp(wattr.startstamp));
-	// 	usleep(2000000);
-	// }
 
 	if (! philostable_create(&wattr))
 		return (printf("Could not create philosophers and forks\n") && 0);
