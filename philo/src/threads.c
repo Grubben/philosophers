@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:58:23 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 22:36:55 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	threads_create(t_geninfo *wdata)
 		usleep(1);
 		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
-		// else
-		// 	pthread_detach(tmphilo->thread);
 	
 		i++;
 	}
@@ -48,8 +46,6 @@ void	*philo_go(void *arg)
 
 	// printf("Philosopher %ld Active\n", philo->id);
 	
-	//TODO: lastmeal should be the same for all 
-	// philo->lastmeal = get_timestamp(philo->wdata->startstamp);
 	philo->lastmeal = philo->wdata->startstamp;
 
 	// statechange(philo, THINK);
