@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/12 18:38:20 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:26:06 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,5 +219,4 @@ void	sttchng(t_philo *philo)
 		print_state(philo, THINK);
 	}
 	philo_autodie(philo);
-	// printf("%ld has left the WhileLoop\n", philo->id);
 }
