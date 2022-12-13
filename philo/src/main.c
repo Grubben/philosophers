@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:41:15 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:45:29 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ int	main(int argc, char *argv[])
 	
 	pthread_mutex_init(&wattr.printlock, NULL);
 	pthread_mutex_init(&wattr.allmutex, NULL);
-	
-	gettimeofday(&wattr.startime, NULL);
-	wattr.startstamp = wattr.startime.tv_sec * 1000 + wattr.startime.tv_usec / 1000;
 
 
 	if (! philostable_create(&wattr))

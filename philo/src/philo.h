@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:41:21 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:47:08 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ struct s_geninfo
 	pthread_mutex_t	allmutex;
 	pthread_mutex_t	printlock;
 
-	struct timeval	startime;
 	suseconds_t		startstamp;
 
 	int				philo_died;

@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/12 19:00:14 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:46:09 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ int	threads_create(t_geninfo *wdata)
 {
 	size_t	i;
 	t_philo	*tmphilo;
+	struct timeval	startime;
+
+	gettimeofday(&startime, NULL);
+	wdata->startstamp = startime.tv_sec * 1000 + startime.tv_usec / 1000;
+	
 	// Create philo-threads
-	gettimeofday(&wdata->startime, NULL);
-	wdata->startstamp = wdata->startime.tv_sec * 1000 + wdata->startime.tv_usec / 1000;
 	i = 0;
 	while (i < wdata->n_philos)
 	{
