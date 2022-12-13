@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:47:08 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/13 21:57:59 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,12 @@ int	philo_forks_lock(t_philo *philo);
 
 int	philo_forks_unlock(t_philo *philo);
 
-/*	PHILOSOPHER	*/
-void	*philo_go(void *arg);
-
+/*	TABLE	*/
 int	philostable_create(t_geninfo *wdata);
 
 /*	THREADS	*/
+void	*philo_go(void *arg);
+
 int	threads_create(t_geninfo *wdata);
 
 int	threads_join(t_geninfo *wdata);

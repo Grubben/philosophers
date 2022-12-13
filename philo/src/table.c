@@ -1,35 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosopher.c                                      :+:      :+:    :+:   */
+/*   table.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/02 18:35:39 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:39:09 by endarc           ###   ########.fr       */
+/*   Created: 2022/12/13 21:56:57 by endarc            #+#    #+#             */
+/*   Updated: 2022/12/13 21:57:07 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*philo_go(void *arg)
-{
-	t_philo	*philo;
-
-	// Init of philo
-	philo = (t_philo *)arg;
-
-	// printf("Philosopher %ld Active\n", philo->id);
-	
-	//TODO: lastmeal should be the same for all 
-	// philo->lastmeal = get_timestamp(philo->wdata->startstamp);
-	philo->lastmeal = philo->wdata->startstamp;
-
-	// statechange(philo, THINK);
-	sttchng(philo);
-	
-	return (NULL);
-}
 
 int	philostable_create(t_geninfo *wdata)
 {
