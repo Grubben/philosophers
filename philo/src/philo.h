@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 21:57:59 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 09:53:30 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ struct s_philo
 	t_fork		*fright;
 
 	suseconds_t lastmeal;
+	size_t		mealseaten;
 
 	t_geninfo	*wdata;
 };

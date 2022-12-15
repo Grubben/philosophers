@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 22:37:18 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 10:32:40 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,18 @@ int	philo_tkforks(t_philo *philo)
 int	philo_eat(t_philo *philo)
 {
 	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
-	myusleep(philo, philo->wdata->time_to_eat);
+	if (! myusleep(philo, philo->wdata->time_to_eat))
+		return (0);
+
+	if (philo->wdata->n_must_eat > 0)
+	{
+		philo->mealseaten++;
+		if (philo->mealseaten >= philo->wdata->n_must_eat)
+		{
+			// philo_autodie(philo); We actually don't want to announce he died
+			return (0);
+		}
+	}
 	
 	return (1);
 }
@@ -56,11 +67,10 @@ void	philo_autodie(t_philo *philo)
 	if (philo->state == EAT)
 	{
 		//TODO: Do I need to do this?
-		// philo_forks_lock(philo);
-		// philo->fleft->setb = 1;
-		// philo->fright->setb = 1;
-		// philo_forks_unlock(philo);
-		
+		philo_forks_lock(philo);
+		philo->fleft->setb = 1;
+		philo->fright->setb = 1;
+		philo_forks_unlock(philo);
 	}
 	pthread_mutex_lock(&philo->wdata->allmutex);
 	if (philo->wdata->philo_died == 0)

@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:56:57 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/13 21:57:07 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 09:55:15 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	philostable_create(t_geninfo *wdata)
 		tmphilo = &wdata->philarr[i];
 		tmphilo->id = i + 1;
 		tmphilo->wdata = wdata;
+
+		tmphilo->mealseaten = 0;
 
 		// Putting a fork there
 		// wdata->forks[i] = 1;
