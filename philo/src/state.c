@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 10:32:40 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 13:47:02 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	philo_tkforks(t_philo *philo)
 int	philo_eat(t_philo *philo)
 {
 	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
-	if (! myusleep(philo, philo->wdata->time_to_eat))
+	if (! protectedsleep(philo, philo->wdata->time_to_eat))
 		return (0);
 
 	if (philo->wdata->n_must_eat > 0)
@@ -54,7 +54,7 @@ int	philo_rlsforks(t_philo *philo)
 
 int	philo_sleep(t_philo *philo)
 {
-	if (! myusleep(philo, philo->wdata->time_to_sleep))
+	if (! protectedsleep(philo, philo->wdata->time_to_sleep))
 		return (0);
 
 	return (1);
@@ -133,7 +133,11 @@ void	sttchng(t_philo *philo)
 			return (philo_autodie(philo));
 		print_state(philo, EAT);
 		if (! philo_eat(philo))
+		{
+			philo_rlsforks(philo);
+			// printf("%ld is disappearing\n_%d__%d\n", philo->id, philo->fleft->setb, philo->fright->setb);
 			return ;
+		}
 		philo->state = RELEASEFORK;
 		if (check_anydead(philo))
 			return (philo_autodie(philo));

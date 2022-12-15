@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:29:56 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 22:37:31 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 13:40:37 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ int	myusleep(t_philo *philo, suseconds_t time_to_x)
 		}
 		usleep(1); // not sure if this does anything
 		now = get_timestamp(philo->wdata->startstamp);
+	}
+	return (1);
+}
+
+int	protectedsleep(t_philo *philo, suseconds_t time_to_x)
+{
+	if (! myusleep(philo, time_to_x))
+	{
+		philo_autodie(philo);
+		return (0);
 	}
 	return (1);
 }

@@ -6,12 +6,11 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 21:56:57 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/15 09:55:15 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 13:40:43 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 int	philostable_create(t_geninfo *wdata)
 {
