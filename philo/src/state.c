@@ -6,11 +6,19 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 14:08:20 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 14:16:12 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	changestate(t_philo *philo, int newstate)
+{
+	if (newstate == philo->state)
+		return ;
+	philo->state = newstate;
+	print_state(philo, newstate);
+}
 
 int	philo_tkforks(t_philo *philo)
 {
@@ -98,12 +106,26 @@ int	check_anydead(t_philo *philo)
 	return (0);
 }
 
-void	changestate(t_philo *philo, int newstate)
+
+int	philo_think(t_philo *philo)
 {
-	if (newstate == philo->state)
-		return ;
-	philo->state = newstate;
-	print_state(philo, newstate);
+	philo_forks_lock(philo);
+	if (philo->fleft->setb && philo->fright->setb)
+	{
+		//Alert: Forks left locked
+		return (1);
+		// philo->state = TAKEFORK;
+		// print_state(philo, TAKEFORK);
+		// if (! philo_tkforks(philo))
+		// 	return ;
+	}
+	else
+	{
+		philo_forks_unlock(philo);
+		return (0);
+	}
+
+	
 }
 
 void	sttchng(t_philo *philo)
@@ -122,19 +144,21 @@ void	sttchng(t_philo *philo)
 			return ;
 
 		changestate(philo, THINK);
-		philo_forks_lock(philo);
-		if (philo->fleft->setb && philo->fright->setb)
-		{
-			philo->state = TAKEFORK;
-			print_state(philo, TAKEFORK);
-			if (! philo_tkforks(philo))
-				return ;
-		}
-		else
-		{
-			philo_forks_unlock(philo);
+		if (! philo_think(philo))
 			continue ;
-		}
+		// philo_forks_lock(philo);
+		// if (philo->fleft->setb && philo->fright->setb)
+		// {
+		// 	philo->state = TAKEFORK;
+		// 	print_state(philo, TAKEFORK);
+		// 	if (! philo_tkforks(philo))
+		// 		return ;
+		// }
+		// else
+		// {
+		// 	philo_forks_unlock(philo);
+		// 	continue ;
+		// }
 		changestate(philo, EAT);
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
