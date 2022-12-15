@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 13:47:02 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 14:08:20 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	philo_autodie(t_philo *philo)
 
 }
 
-
 int	check_anydead(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->wdata->allmutex);
@@ -99,11 +98,20 @@ int	check_anydead(t_philo *philo)
 	return (0);
 }
 
+void	changestate(t_philo *philo, int newstate)
+{
+	if (newstate == philo->state)
+		return ;
+	philo->state = newstate;
+	print_state(philo, newstate);
+}
+
 void	sttchng(t_philo *philo)
 {
 	suseconds_t	now;
-	
+
 	print_state(philo, THINK);
+
 	now = get_timestamp(philo->wdata->startstamp);
 	while (now - philo->lastmeal < philo->wdata->time_to_die)
 	{
@@ -113,8 +121,7 @@ void	sttchng(t_philo *philo)
 		if (check_anydead(philo))
 			return ;
 
-		philo->state = THINK;
-		// print_state(philo, THINK);
+		changestate(philo, THINK);
 		philo_forks_lock(philo);
 		if (philo->fleft->setb && philo->fright->setb)
 		{
@@ -128,7 +135,7 @@ void	sttchng(t_philo *philo)
 			philo_forks_unlock(philo);
 			continue ;
 		}
-		philo->state = EAT;
+		changestate(philo, EAT);
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
 		print_state(philo, EAT);
@@ -138,13 +145,13 @@ void	sttchng(t_philo *philo)
 			// printf("%ld is disappearing\n_%d__%d\n", philo->id, philo->fleft->setb, philo->fright->setb);
 			return ;
 		}
-		philo->state = RELEASEFORK;
+		changestate(philo, RELEASEFORK);
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
 		print_state(philo, RELEASEFORK);
 		if (! philo_rlsforks(philo))
 			return ;
-		philo->state = SLEEP;
+		changestate(philo, RELEASEFORK);
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
 		print_state(philo, SLEEP);
@@ -152,8 +159,6 @@ void	sttchng(t_philo *philo)
 			return ;
 		
 		now = get_timestamp(philo->wdata->startstamp);
-
-		print_state(philo, THINK);
 	}
 	philo_autodie(philo);
 }

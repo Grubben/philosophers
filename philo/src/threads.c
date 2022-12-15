@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/13 22:36:55 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 14:08:12 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	*philo_go(void *arg)
 	
 	philo->lastmeal = philo->wdata->startstamp;
 
-	// statechange(philo, THINK);
 	sttchng(philo);
 	
 	return (NULL);
