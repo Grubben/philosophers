@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:29:56 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 13:40:37 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/15 13:53:34 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	myusleep(t_philo *philo, suseconds_t time_to_x)
 		//TODO: Massively rework this section!
 		if (now - philo->lastmeal > philo->wdata->time_to_die)
 		{
-			philo_autodie(philo);
+			// philo_autodie(philo);
 			return (0);
 		}
 		usleep(1); // not sure if this does anything
