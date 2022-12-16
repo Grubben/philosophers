@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/16 13:02:23 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/16 14:32:20 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	philo_eat(t_philo *philo)
 		philo->mealseaten++;
 		if (philo->mealseaten >= philo->wdata->n_must_eat)
 		{
+			printf("%ld has eaten his last meal\n", philo->id);
 			// philo_autodie(philo); We actually don't want to announce he died
 			return (0);
 		}
@@ -129,24 +130,31 @@ void	sttchng(t_philo *philo)
 	now = get_timestamp(philo->wdata->startstamp);
 	while (now - philo->lastmeal < philo->wdata->time_to_die)
 	{
-		if (philo->state == DEAD)
-			break ;
-
 		if (check_anydead(philo))
+		{
+			printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);	
 			return ; // Surprisingly this is wrong but has been working
-					// should be returning philo_autodie()
+					// should be returning philo_autodie(philo)
+		}
 		changestate(philo, THINK);
 		if (! philo_think(philo))
 			continue ;
 
 		if (check_anydead(philo))
+		{
+			printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);
 			return (philo_autodie(philo));
+		}
+			
 		changestate(philo, TAKEFORK);
 		if (! philo_tkforks(philo))
 			return ;
 
 		if (check_anydead(philo))
+		{
+			printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);			
 			return (philo_autodie(philo));
+		}
 		changestate(philo, EAT);
 		if (! philo_eat(philo))
 		{
@@ -155,12 +163,18 @@ void	sttchng(t_philo *philo)
 			return ;
 		}
 		if (check_anydead(philo))
+		{
+			printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);
 			return (philo_autodie(philo));
+		}
 		changestate(philo, RELEASEFORK);
 		if (! philo_rlsforks(philo))
 			return ;
 		if (check_anydead(philo))
+		{
+			printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);
 			return (philo_autodie(philo));
+		}
 		changestate(philo, RELEASEFORK);
 		if (! philo_sleep(philo))
 			return ;
@@ -168,4 +182,5 @@ void	sttchng(t_philo *philo)
 		now = get_timestamp(philo->wdata->startstamp);
 	}
 	philo_autodie(philo);
+	printf("%ld DIED BY BREAKING\n", philo->id);
 }
