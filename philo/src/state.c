@@ -6,11 +6,26 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 14:16:12 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/16 13:02:23 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	check_anydead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->wdata->allmutex);
+	if (philo->wdata->philo_died)
+	{
+		pthread_mutex_unlock(&philo->wdata->allmutex);
+		return (1);
+
+	}
+	else
+		pthread_mutex_unlock(&philo->wdata->allmutex);
+
+	return (0);
+}
 
 void	changestate(t_philo *philo, int newstate)
 {
@@ -20,10 +35,23 @@ void	changestate(t_philo *philo, int newstate)
 	print_state(philo, newstate);
 }
 
+int	philo_think(t_philo *philo)
+{
+	philo_forks_lock(philo);
+	if (philo->fleft->setb && philo->fright->setb)
+	{
+		//Alert: Forks left locked
+		return (1);
+	}
+	else
+	{
+		philo_forks_unlock(philo);
+		return (0);
+	}
+}
+
 int	philo_tkforks(t_philo *philo)
 {
-	// philo->state = TAKEFORK;
-	// philo_forks_lock(philo);
 	philo->fleft->setb = 0;
 	philo->fright->setb = 0;
 	philo_forks_unlock(philo);
@@ -91,42 +119,6 @@ void	philo_autodie(t_philo *philo)
 
 }
 
-int	check_anydead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->wdata->allmutex);
-	if (philo->wdata->philo_died)
-	{
-		pthread_mutex_unlock(&philo->wdata->allmutex);
-		return (1);
-
-	}
-	else
-		pthread_mutex_unlock(&philo->wdata->allmutex);
-
-	return (0);
-}
-
-
-int	philo_think(t_philo *philo)
-{
-	philo_forks_lock(philo);
-	if (philo->fleft->setb && philo->fright->setb)
-	{
-		//Alert: Forks left locked
-		return (1);
-		// philo->state = TAKEFORK;
-		// print_state(philo, TAKEFORK);
-		// if (! philo_tkforks(philo))
-		// 	return ;
-	}
-	else
-	{
-		philo_forks_unlock(philo);
-		return (0);
-	}
-
-	
-}
 
 void	sttchng(t_philo *philo)
 {
@@ -141,44 +133,35 @@ void	sttchng(t_philo *philo)
 			break ;
 
 		if (check_anydead(philo))
-			return ;
-
+			return ; // Surprisingly this is wrong but has been working
+					// should be returning philo_autodie()
 		changestate(philo, THINK);
 		if (! philo_think(philo))
 			continue ;
-		// philo_forks_lock(philo);
-		// if (philo->fleft->setb && philo->fright->setb)
-		// {
-		// 	philo->state = TAKEFORK;
-		// 	print_state(philo, TAKEFORK);
-		// 	if (! philo_tkforks(philo))
-		// 		return ;
-		// }
-		// else
-		// {
-		// 	philo_forks_unlock(philo);
-		// 	continue ;
-		// }
-		changestate(philo, EAT);
+
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
-		print_state(philo, EAT);
+		changestate(philo, TAKEFORK);
+		if (! philo_tkforks(philo))
+			return ;
+
+		if (check_anydead(philo))
+			return (philo_autodie(philo));
+		changestate(philo, EAT);
 		if (! philo_eat(philo))
 		{
 			philo_rlsforks(philo);
 			// printf("%ld is disappearing\n_%d__%d\n", philo->id, philo->fleft->setb, philo->fright->setb);
 			return ;
 		}
-		changestate(philo, RELEASEFORK);
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
-		print_state(philo, RELEASEFORK);
+		changestate(philo, RELEASEFORK);
 		if (! philo_rlsforks(philo))
 			return ;
-		changestate(philo, RELEASEFORK);
 		if (check_anydead(philo))
 			return (philo_autodie(philo));
-		print_state(philo, SLEEP);
+		changestate(philo, RELEASEFORK);
 		if (! philo_sleep(philo))
 			return ;
 		
