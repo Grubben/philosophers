@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.c                                            :+:      :+:    :+:   */
+/*   states.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 20:11:57 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:16:20 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,37 +121,3 @@ void	philo_autodie(t_philo *philo)
 	philo->state = DEAD;
 }
 
-
-void	sttchng(t_philo *philo)
-{
-	suseconds_t	now;
-
-	prot_state(philo, THINK);
-	now = get_timestamp(philo->wdata->startstamp);
-	while (now - philo->lastmeal < philo->wdata->time_to_die)
-	{
-		if (check_anydead(philo))
-			break ;
-		changestate(philo, THINK);
-		if (! philo_think(philo))
-			continue ;
-		changestate(philo, TAKEFORK);
-		if (! philo_tkforks(philo))
-			break ;
-		if (check_anydead(philo))
-			break ;
-		changestate(philo, EAT);
-		if (! philo_eat(philo))
-			return ((void)philo_rlsforks(philo));
-		changestate(philo, RELEASEFORK);
-		if (! philo_rlsforks(philo))
-			break ;
-		if (check_anydead(philo))
-			break ;
-		changestate(philo, SLEEP);
-		if (! philo_sleep(philo))
-			break ;		
-		now = get_timestamp(philo->wdata->startstamp);
-	}
-	philo_autodie(philo);
-}

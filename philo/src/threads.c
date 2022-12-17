@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 14:08:12 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:18:10 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,43 @@ void	*philo_go(void *arg)
 	
 	philo->lastmeal = philo->wdata->startstamp;
 
-	sttchng(philo);
+	threadmain(philo);
 	
 	return (NULL);
+}
+
+void	threadmain(t_philo *philo)
+{
+	suseconds_t	now;
+
+	prot_state(philo, THINK);
+	now = get_timestamp(philo->wdata->startstamp);
+	while (now - philo->lastmeal < philo->wdata->time_to_die)
+	{
+		if (check_anydead(philo))
+			break ;
+		changestate(philo, THINK);
+		if (! philo_think(philo))
+			continue ;
+		changestate(philo, TAKEFORK);
+		if (! philo_tkforks(philo))
+			break ;
+		if (check_anydead(philo))
+			break ;
+		changestate(philo, EAT);
+		if (! philo_eat(philo))
+			return ((void)philo_rlsforks(philo));
+		changestate(philo, RELEASEFORK);
+		if (! philo_rlsforks(philo))
+			break ;
+		if (check_anydead(philo))
+			break ;
+		changestate(philo, SLEEP);
+		if (! philo_sleep(philo))
+			break ;		
+		now = get_timestamp(philo->wdata->startstamp);
+	}
+	philo_autodie(philo);
 }
 
 /* Only the last thread has been joined

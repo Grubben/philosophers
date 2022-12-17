@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 19:08:05 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:20:40 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	main(int argc, char *argv[])
 	wattr.philo_died = 0;
 	wattr.n_forks = wattr.n_philos;
 	
-	pthread_mutex_init(&wattr.printlock, NULL);
 	pthread_mutex_init(&wattr.allmutex, NULL);
 
 
@@ -46,7 +45,6 @@ int	main(int argc, char *argv[])
 
 	threads_join(&wattr);
 	pthread_mutex_destroy(&wattr.allmutex);
-	pthread_mutex_destroy(&wattr.printlock);	
 
 	forks_destroy(wattr.forks, wattr.n_forks);
 	free(wattr.forks);

@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 20:14:04 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:19:48 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,25 @@ struct s_geninfo
 };
 
 /*	MAIN	*/
-void	statechange(t_philo *philo, int newstate);
+// void	statechange(t_philo *philo, int newstate);
 
 /*	STATES	*/
-void	sttchng(t_philo *philo);
+int	check_anydead(t_philo *philo);
+
+void	changestate(t_philo *philo, int newstate);
+
+int	philo_think(t_philo *philo);
+
+int	philo_tkforks(t_philo *philo);
+
+int	philo_eat(t_philo *philo);
+
+int	philo_rlsforks(t_philo *philo);
+
+int	philo_sleep(t_philo *philo);
 
 void	philo_autodie(t_philo *philo);
 
-void	philo_die(t_philo *philo);
 
 /*	FORKS	*/
 int	fork_init(t_fork *fork);
@@ -103,9 +114,11 @@ int	philo_forks_unlock(t_philo *philo);
 int	philostable_create(t_geninfo *wdata);
 
 /*	THREADS	*/
+int	threads_create(t_geninfo *wdata);
+
 void	*philo_go(void *arg);
 
-int	threads_create(t_geninfo *wdata);
+void	threadmain(t_philo *philo);
 
 int	threads_join(t_geninfo *wdata);
 
