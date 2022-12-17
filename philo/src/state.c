@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 19:03:12 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:11:57 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,12 @@ void	philo_autodie(t_philo *philo)
 	pthread_mutex_lock(&philo->wdata->allmutex);
 	if (philo->wdata->philo_died == 0)
 	{
-		print_state(philo, DEAD);
-		// printf("%ld %ld died\n", get_timestamp(philo->wdata->startstamp), philo->id);
+		// prot_state(philo, DEAD);
+		printf("%ld %ld died\n", get_timestamp(philo->wdata->startstamp), philo->id);
 		philo->wdata->philo_died = 1;
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 	philo->state = DEAD;
-
 }
 
 
@@ -127,62 +126,32 @@ void	sttchng(t_philo *philo)
 {
 	suseconds_t	now;
 
-	// print_state(philo, THINK);
 	prot_state(philo, THINK);
-
 	now = get_timestamp(philo->wdata->startstamp);
 	while (now - philo->lastmeal < philo->wdata->time_to_die)
 	{
 		if (check_anydead(philo))
-		{
-			// printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);	
-			return ; // Surprisingly this is wrong but has been working
-					// should be returning philo_autodie(philo)
-		}
+			break ;
 		changestate(philo, THINK);
 		if (! philo_think(philo))
 			continue ;
-
-		// if (check_anydead(philo))
-		// {
-		// 	// printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);
-		// 	return (philo_autodie(philo));
-		// }	
 		changestate(philo, TAKEFORK);
 		if (! philo_tkforks(philo))
-			return ;
-
-		// if (check_anydead(philo))
-		// {
-		// 	// printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);			
-		// 	return (philo_autodie(philo));
-		// }
+			break ;
+		if (check_anydead(philo))
+			break ;
 		changestate(philo, EAT);
 		if (! philo_eat(philo))
-		{
-			philo_rlsforks(philo);
-			// printf("%ld is disappearing\n_%d__%d\n", philo->id, philo->fleft->setb, philo->fright->setb);
-			return ;
-		}
-		// if (check_anydead(philo))
-		// {
-		// 	// printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);
-		// 	return (philo_autodie(philo));
-		// }
+			return ((void)philo_rlsforks(philo));
 		changestate(philo, RELEASEFORK);
 		if (! philo_rlsforks(philo))
-			return ;
-		// if (check_anydead(philo))
-		// {
-		// 	// printf("%ld DIED AT CHECK_ANYDEAD\n", philo->id);
-		// 	return (philo_autodie(philo));
-		// }
-		changestate(philo, RELEASEFORK);
+			break ;
+		if (check_anydead(philo))
+			break ;
+		changestate(philo, SLEEP);
 		if (! philo_sleep(philo))
-			return ;
-		
+			break ;		
 		now = get_timestamp(philo->wdata->startstamp);
 	}
 	philo_autodie(philo);
-	// printf("%ld DIED BY BREAKING\n", philo->id);
 }

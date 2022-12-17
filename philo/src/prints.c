@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 19:04:13 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:13:43 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,11 @@ void	print_state(t_philo *philo, int state)
 
 void	prot_state(t_philo *philo, int state)
 {
-	// pthread_mutex_lock(&philo->wdata->printlock);
 	pthread_mutex_lock(&philo->wdata->allmutex);
 	if (philo->wdata->philo_died == 0)
 	{
 		print_state(philo, state);
 	}
-	// pthread_mutex_unlock(&philo->wdata->printlock);
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 }
 

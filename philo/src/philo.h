@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 19:03:38 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 20:14:04 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ struct s_geninfo
 	size_t			n_must_eat;
 
 	pthread_mutex_t	allmutex;
-	pthread_mutex_t	printlock;
+	// pthread_mutex_t	printlock;
 
 	suseconds_t		startstamp;
 
