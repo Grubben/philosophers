@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/16 15:04:00 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 19:03:12 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	changestate(t_philo *philo, int newstate)
 	if (newstate == philo->state)
 		return ;
 	philo->state = newstate;
-	print_state(philo, newstate);
+	// print_state(philo, newstate);
+	prot_state(philo, newstate);
 }
 
 int	philo_think(t_philo *philo)
@@ -126,7 +127,8 @@ void	sttchng(t_philo *philo)
 {
 	suseconds_t	now;
 
-	print_state(philo, THINK);
+	// print_state(philo, THINK);
+	prot_state(philo, THINK);
 
 	now = get_timestamp(philo->wdata->startstamp);
 	while (now - philo->lastmeal < philo->wdata->time_to_die)

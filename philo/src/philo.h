@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 13:43:29 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/17 19:03:38 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ int	protectedsleep(t_philo *philo, suseconds_t time_to_x);
 
 /*	PRINTS	*/
 void		print_state(t_philo *philo, int state);
+
+void	prot_state(t_philo *philo, int state);
 
 /*  UTILS   */
 int			ft_atoi(const char *str);
