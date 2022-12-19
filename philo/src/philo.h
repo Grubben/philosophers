@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 20:19:48 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 11:34:12 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ int	threads_join(t_geninfo *wdata);
 
 /*	TIME	*/
 suseconds_t	get_timestamp(suseconds_t startstamp);
+
+suseconds_t tmsnclstml(t_philo *philo);
 
 // int	myusleep(t_philo *philo, suseconds_t time_to_x);
 

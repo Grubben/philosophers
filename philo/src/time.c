@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:29:56 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/15 13:53:34 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 11:36:03 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ suseconds_t	get_timestamp(suseconds_t startstamp)
 	
 	gettimeofday(&now, NULL);
 	return (now.tv_sec * 1000 + now.tv_usec / 1000 - startstamp);	
+}
+
+/* Returns the time since the last meal*/
+suseconds_t tmsnclstml(t_philo *philo)
+{
+	return get_timestamp(philo->wdata->startstamp) - philo->lastmeal;
 }
 
 /*Implementing my own usleep*/

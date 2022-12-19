@@ -6,60 +6,50 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/17 20:18:10 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 11:34:34 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/* Create philo-threads
+*/
 int	threads_create(t_geninfo *wdata)
 {
-	size_t	i;
-	t_philo	*tmphilo;
+	size_t			i;
+	t_philo			*tmphilo;
 	struct timeval	startime;
 
 	gettimeofday(&startime, NULL);
 	wdata->startstamp = startime.tv_sec * 1000 + startime.tv_usec / 1000;
-	
-	// Create philo-threads
 	i = 0;
 	while (i < wdata->n_philos)
 	{
 		tmphilo = &wdata->philarr[i];
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
-		// 5 micro-seconds
 		usleep(1);
 		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
-	
 		i++;
 	}
 	return (1);
 }
 
+/* Init of philo
+*/
 void	*philo_go(void *arg)
 {
 	t_philo	*philo;
 
-	// Init of philo
 	philo = (t_philo *)arg;
-
-	// printf("Philosopher %ld Active\n", philo->id);
-	
 	philo->lastmeal = philo->wdata->startstamp;
-
 	threadmain(philo);
-	
 	return (NULL);
 }
 
 void	threadmain(t_philo *philo)
 {
-	suseconds_t	now;
-
-	prot_state(philo, THINK);
-	now = get_timestamp(philo->wdata->startstamp);
-	while (now - philo->lastmeal < philo->wdata->time_to_die)
+	while (tmsnclstml(philo) < philo->wdata->time_to_die)
 	{
 		if (check_anydead(philo))
 			break ;
@@ -81,8 +71,7 @@ void	threadmain(t_philo *philo)
 			break ;
 		changestate(philo, SLEEP);
 		if (! philo_sleep(philo))
-			break ;		
-		now = get_timestamp(philo->wdata->startstamp);
+			break ;
 	}
 	philo_autodie(philo);
 }
@@ -98,7 +87,7 @@ int	threads_join(t_geninfo *wdata)
 	t_philo	*tmphilo;
 
 	i = 0;
-	while (i <wdata->n_philos - 1)
+	while (i < wdata->n_philos - 1)
 	{
 		tmphilo = &wdata->philarr[i];
 		pthread_join(tmphilo->thread, NULL);
