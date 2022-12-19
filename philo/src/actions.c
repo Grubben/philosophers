@@ -6,34 +6,31 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/19 12:31:18 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 12:56:10 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* Alert: Forks left locked*/
+/* Alert: Forks may be left locked*/
 int	philo_think(t_philo *philo)
 {
-    if (! (philo->fleft && philo->fright))
-    {
-        if (philo->fleft->setb == 1)
-        {
-            philo->fleft->setb = 0;
-            prot_state(philo, TAKEFORK);
-        }
-        return (0);
-    }
+	if (! (philo->fleft && philo->fright))
+	{
+		if (philo->fleft->setb == 1)
+		{
+			philo->fleft->setb = 0;
+			prot_state(philo, TAKEFORK);
+		}
+		return (0);
+	}
 	philo_forks_lock(philo);
 	if (philo->fleft->setb && philo->fright->setb)
 	{
 		return (1);
 	}
-	else
-	{
-		philo_forks_unlock(philo);
-		return (0);
-	}
+	philo_forks_unlock(philo);
+	return (0);
 }
 
 int	philo_tkforks(t_philo *philo)

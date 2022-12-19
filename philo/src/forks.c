@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 17:15:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/07 18:16:22 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/19 12:57:51 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,12 @@ int	forks_destroy(t_fork *forks, size_t n_forks)
 
 int	philo_forks_lock(t_philo *philo)
 {
-	if ((philo->id & 1) == 1) // id is odd
+	if ((philo->id & 1) == 1)
 	{
 		pthread_mutex_lock(&philo->fleft->lock);
-		pthread_mutex_lock(&philo->fright->lock);			
+		pthread_mutex_lock(&philo->fright->lock);
 		return (1);
 	}
-	// else // id is even
 	pthread_mutex_lock(&philo->fright->lock);
 	pthread_mutex_lock(&philo->fleft->lock);
 	return (1);
@@ -48,15 +47,13 @@ int	philo_forks_lock(t_philo *philo)
 
 int	philo_forks_unlock(t_philo *philo)
 {
-	if ((philo->id & 1) == 1) // id is odd
+	if ((philo->id & 1) == 1)
 	{
 		pthread_mutex_unlock(&philo->fleft->lock);
-		pthread_mutex_unlock(&philo->fright->lock);			
+		pthread_mutex_unlock(&philo->fright->lock);
 		return (1);
 	}
-	// else // id is even
 	pthread_mutex_unlock(&philo->fright->lock);
 	pthread_mutex_unlock(&philo->fleft->lock);
 	return (1);
-	
 }
