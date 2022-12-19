@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/19 12:12:21 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 12:31:18 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	philo_think(t_philo *philo)
 {
     if (! (philo->fleft && philo->fright))
     {
+        if (philo->fleft->setb == 1)
+        {
+            philo->fleft->setb = 0;
+            prot_state(philo, TAKEFORK);
+        }
         return (0);
     }
 	philo_forks_lock(philo);

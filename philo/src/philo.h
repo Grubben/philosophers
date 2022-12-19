@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/19 12:07:29 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 12:30:55 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ struct s_philo
 
 	int			state; // e_PHILOSTATE
 	
-	int			forkstaken;
+	// int			forkstaken;
 	t_fork		*fleft;
 	t_fork		*fright;
 

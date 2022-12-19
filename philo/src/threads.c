@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/19 12:20:32 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/19 12:33:16 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*philo_go(void *arg)
 	return (NULL);
 }
 
-/* More than 1 philosopher*/
+/* Now works with 1 philosopher and more*/
 void	threadmain(t_philo *philo)
 {
 	while (tmsnclstml(philo) < philo->wdata->time_to_die)
