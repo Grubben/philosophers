@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 18:17:36 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/22 15:27:35 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/22 15:33:57 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 int	arg_parse(int argc, char *argv[], t_geninfo *wdata)
 {
 	if (! str_isdigit(argv[1]))
-		return (printf("Incorrect argument given\n") && 0);
+		return (0);
 	wdata->n_philos = ft_atoi(argv[1]);
 	if (! str_isdigit(argv[2]))
-		return (printf("Incorrect argument given\n") && 0);
+		return (0);
 	wdata->time_to_die = ft_atoi(argv[2]);
 	if (! str_isdigit(argv[3]))
-		return (printf("Incorrect argument given\n") && 0);
+		return (0);
 	wdata->time_to_eat = ft_atoi(argv[3]);
 	if (! str_isdigit(argv[4]))
-		return (printf("Incorrect argument given\n") && 0);
+		return (0);
 	wdata->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 	{
 		if (! str_isdigit(argv[5]))
-			return (printf("Incorrect argument given\n") && 0);
+			return (0);
 		wdata->n_must_eat = ft_atoi(argv[5]);
 		if (wdata->n_must_eat == 0)
 			return (0);
