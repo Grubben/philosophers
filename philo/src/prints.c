@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/22 14:02:51 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/22 15:37:55 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	prot_state(t_philo *philo, int state)
 	if (philo->wdata->philo_died == 0)
 	{
 		print_state(philo, state);
+		if (state == TAKEFORK || state == RELEASEFORK)
+			print_state(philo, state);
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 }
