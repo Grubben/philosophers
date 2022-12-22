@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/22 14:16:33 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/22 15:09:51 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,7 @@ void		prot_state(t_philo *philo, int state);
 
 /*  UTILS   */
 int			ft_atoi(const char *str);
+
+int			str_isdigit(const char *str);
 
 #endif

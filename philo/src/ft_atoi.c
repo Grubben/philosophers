@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/24 11:56:30 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/11/24 10:05:28 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/22 15:08:21 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (num * sign);
+}
+
+static int	is_digit(char c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+int	str_isdigit(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (! is_digit(str[i]))
+			return (0);
+		i++;
+	}
+	return (i > 0);
 }
 
 /*
