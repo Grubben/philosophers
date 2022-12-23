@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/19 12:52:20 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/23 21:08:59 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ void	threadmain(t_philo *philo)
 		if (check_anydead(philo))
 			break ;
 		changestate(philo, THINK);
-		if (! philo_think(philo))
-			continue ;
+		philo_forks_lock(philo);
+		// if (! philo_think(philo))
+		// 	continue ;
 		changestate(philo, TAKEFORK);
-		if (! philo_tkforks(philo))
-			break ;
+		// if (! philo_tkforks(philo))
+		// 	break ;
 		if (check_anydead(philo))
 			break ;
 		changestate(philo, EAT);
@@ -69,6 +70,7 @@ void	threadmain(t_philo *philo)
 		changestate(philo, RELEASEFORK);
 		if (! philo_rlsforks(philo))
 			break ;
+		// philo_forks_unlock(philo);
 		if (check_anydead(philo))
 			break ;
 		changestate(philo, SLEEP);

@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/19 12:56:10 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/23 20:54:57 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	philo_think(t_philo *philo)
 		}
 		return (0);
 	}
-	philo_forks_lock(philo);
+	// philo_forks_lock(philo);
 	if (philo->fleft->setb && philo->fright->setb)
 	{
 		return (1);
 	}
-	philo_forks_unlock(philo);
+	// philo_forks_unlock(philo);
 	return (0);
 }
 
@@ -37,7 +37,7 @@ int	philo_tkforks(t_philo *philo)
 {
 	philo->fleft->setb = 0;
 	philo->fright->setb = 0;
-	philo_forks_unlock(philo);
+	// philo_forks_unlock(philo);
 	return (1);
 }
 
@@ -59,7 +59,7 @@ int	philo_eat(t_philo *philo)
 
 int	philo_rlsforks(t_philo *philo)
 {
-	philo_forks_lock(philo);
+	// philo_forks_lock(philo);
 	philo->fleft->setb = 1;
 	philo->fright->setb = 1;
 	philo_forks_unlock(philo);
