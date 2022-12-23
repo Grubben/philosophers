@@ -6,7 +6,7 @@
 /*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/23 21:18:12 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/23 21:26:25 by endarc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,10 @@ void	threadmain(t_philo *philo)
 			philo_forks_unlock(philo);
 			break ;
 		}
-		// if (! philo_think(philo))
-		// 	continue ;
 		changestate(philo, TAKEFORK);
-		// if (! philo_tkforks(philo))
-		// 	break ;
-		// if (check_anydead(philo))
-		// 	break ;
 		changestate(philo, EAT);
+		//TODO: Check if protection is needed
 		philo_eat(philo);
-		// if (! philo_eat(philo))
-		// 	return ((void)philo_rlsforks(philo));
 		if (check_anydead(philo))
 		{
 			philo_forks_unlock(philo);	
@@ -78,8 +71,6 @@ void	threadmain(t_philo *philo)
 		}
 		changestate(philo, RELEASEFORK);
 		philo_forks_unlock(philo);
-		// if (! philo_rlsforks(philo))
-		// 	break ;
 		changestate(philo, SLEEP);
 		if (! philo_sleep(philo))
 			break ;
