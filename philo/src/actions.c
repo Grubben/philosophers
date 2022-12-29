@@ -6,34 +6,26 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/29 16:40:20 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:01:02 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/* Alert: Forks may be left locked*/
-/*
 int	philo_think(t_philo *philo)
 {
+	changestate(philo, THINK);
+	
 	if (! (philo->fleft && philo->fright))
 	{
-		if (philo->fleft->setb == 1)
-		{
-			philo->fleft->setb = 0;
-			prot_state(philo, TAKEFORK);
-		}
+		print_state(philo, TAKEFORK);
+		myusleep(philo, philo->wdata->time_to_die);
 		return (0);
 	}
-	// philo_forks_lock(philo);
-	if (philo->fleft->setb && philo->fright->setb)
-	{
-		return (1);
-	}
-	// philo_forks_unlock(philo);
-	return (0);
-}
 
+	return (1);
+}
+/*
 int	philo_tkforks(t_philo *philo)
 {
 	philo->fleft->setb = 0;
