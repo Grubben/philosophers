@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 20:16:32 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 20:31:43 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,21 @@ int	tkneat(t_philo *philo)
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 	return (has_died);
 }
+
+int	presleep(t_philo *philo)
+{
+	int	has_died;
+	
+	pthread_mutex_lock(&philo->wdata->allmutex);
+	has_died = philo->wdata->philo_died;
+	if (has_died == 0)
+	{		
+		print_state(philo, SLEEP);
+	}
+	pthread_mutex_unlock(&philo->wdata->allmutex);
+	return (has_died);
+}
+
 /* Only accessed when there is more than 1 philosopher*/
 void	threadmain(t_philo *philo)
 {
@@ -72,27 +87,21 @@ void	threadmain(t_philo *philo)
 	{
 		prot_state(philo, THINK);
 		philo_forks_lock(philo);
-		
+
 		if (tkneat(philo))
 		{
 			philo_forks_unlock(philo);
 			break ;
 		}
-		// prot_state(philo, TAKEFORK);
-		// prot_state(philo, EAT);
 		if (! philo_eat(philo))
 		{
 			philo_forks_unlock(philo);
 			return ;
 		}
-		if (check_anydead(philo))
-		{
-			philo_forks_unlock(philo);	
-			break ;
-		}
-		
+
 		philo_forks_unlock(philo);
-		prot_state(philo, SLEEP);
+		if (presleep(philo))
+			break ;
 		if (! philo_sleep(philo))
 			break ;
 	}
