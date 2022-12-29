@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 19:02:46 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 19:11:36 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,13 @@ void	threadmain(t_philo *philo)
 	{
 		prot_state(philo, THINK);
 		philo_forks_lock(philo);
-		if (check_anydead(philo))
-		{
-			philo_forks_unlock(philo);
-			break ;
-		}
+		// if (check_anydead(philo))
+		// {
+		// 	philo_forks_unlock(philo);
+		// 	break ;
+		// }
 		prot_state(philo, TAKEFORK);
 		prot_state(philo, EAT);
-		//TODO: Check if protection is needed
 		if (! philo_eat(philo))
 		{
 			philo_forks_unlock(philo);
@@ -76,8 +75,7 @@ void	threadmain(t_philo *philo)
 			break ;
 		}
 		philo_forks_unlock(philo);
-		changestate(philo, SLEEP);
-		// prot_state(philo, SLEEP);
+		prot_state(philo, SLEEP);
 		if (! philo_sleep(philo))
 			break ;
 	}

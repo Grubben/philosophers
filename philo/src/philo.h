@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 17:51:51 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 19:16:27 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ struct s_philo
 {
 	pthread_t	thread;
 	size_t		id;
-
-	int			state;
 
 	t_fork		*fleft;
 	t_fork		*fright;

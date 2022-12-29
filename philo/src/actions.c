@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/29 19:03:02 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 19:15:08 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	philo_solo(t_philo *philo)
 	return (1);
 }
 
+/*
 int	philo_think(t_philo *philo)
 {
 	changestate(philo, THINK);
 	return (1);
 }
 
-/*
 int	philo_tkforks(t_philo *philo)
 {
 	philo->fleft->setb = 0;
