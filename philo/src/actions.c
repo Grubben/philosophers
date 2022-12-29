@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/29 17:01:02 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:24:16 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	philo_think(t_philo *philo)
 {
 	changestate(philo, THINK);
-	
+
 	if (! (philo->fleft && philo->fright))
 	{
 		print_state(philo, TAKEFORK);

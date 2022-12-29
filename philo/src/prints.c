@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/22 15:37:55 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:33:55 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	print_state(t_philo *philo, int state)
 	}
 }
 
+/* Before printing checks if any philo has died*/
 void	prot_state(t_philo *philo, int state)
 {
 	pthread_mutex_lock(&philo->wdata->allmutex);

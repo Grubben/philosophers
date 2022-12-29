@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 16:30:14 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:27:46 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 int	check_anydead(t_philo *philo)
 {
+	int	has_died;
+
 	pthread_mutex_lock(&philo->wdata->allmutex);
-	if (philo->wdata->philo_died)
-	{
-		pthread_mutex_unlock(&philo->wdata->allmutex);
-		return (1);
-	}
-	else
-		pthread_mutex_unlock(&philo->wdata->allmutex);
-	return (0);
+	has_died = philo->wdata->philo_died;
+	pthread_mutex_unlock(&philo->wdata->allmutex);
+	return (has_died);
+	// if (philo->wdata->philo_died)
+	// {
+	// 	pthread_mutex_unlock(&philo->wdata->allmutex);
+	// 	return (1);
+	// }
+	// else
+	// 	pthread_mutex_unlock(&philo->wdata->allmutex);
+	// return (0);
 }
 
 void	changestate(t_philo *philo, int newstate)
@@ -31,6 +36,7 @@ void	changestate(t_philo *philo, int newstate)
 		return ;
 	philo->state = newstate;
 	prot_state(philo, newstate);
+	// print_state(philo, newstate);
 }
 
 void	philo_autodie(t_philo *philo)
@@ -48,6 +54,7 @@ void	philo_autodie(t_philo *philo)
 	{
 		print_state(philo, DEAD);
 		philo->wdata->philo_died = 1;
+		printf("DEATH_STATE: %d\n", philo->state);
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 	philo->state = DEAD;
