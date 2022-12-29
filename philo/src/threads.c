@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/23 21:26:25 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/29 16:36:00 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	threads_create(t_geninfo *wdata)
 	{
 		tmphilo = &wdata->philarr[i];
 		pthread_create(&(tmphilo->thread), NULL, philo_go, tmphilo);
-		usleep(1);
 		if (i == wdata->n_philos - 1)
 			pthread_join(tmphilo->thread, NULL);
 		i++;
@@ -51,6 +50,7 @@ void	*philo_go(void *arg)
 /* Now works with 1 philosopher and more*/
 void	threadmain(t_philo *philo)
 {
+	//TODO: Not stopping when I specify meals to eat
 	while (tmsnclstml(philo) < philo->wdata->time_to_die)
 	{
 		changestate(philo, THINK);
@@ -63,7 +63,11 @@ void	threadmain(t_philo *philo)
 		changestate(philo, TAKEFORK);
 		changestate(philo, EAT);
 		//TODO: Check if protection is needed
-		philo_eat(philo);
+		if (! philo_eat(philo))
+		{
+			philo_forks_unlock(philo);
+			return ; //TODO: Do something when amount of meals reached
+		}
 		if (check_anydead(philo))
 		{
 			philo_forks_unlock(philo);	

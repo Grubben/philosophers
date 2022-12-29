@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:29:56 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/19 11:38:10 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/29 16:20:08 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	myusleep(t_philo *philo, suseconds_t time_to_x)
 		{
 			return (0);
 		}
-		usleep(1);
 		now = get_timestamp(philo->wdata->startstamp);
 	}
 	return (1);
