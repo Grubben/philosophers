@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/29 17:54:31 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 19:03:02 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	philo_solo(t_philo *philo)
 {
+	print_state(philo, THINK);
 	print_state(philo, TAKEFORK);
 	myusleep(philo, philo->wdata->time_to_die);
 	philo_autodie(philo);

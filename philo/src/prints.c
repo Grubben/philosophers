@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 17:42:12 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 18:10:14 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,23 @@ void	print_state(t_philo *philo, int state)
 	{
 		printf("is thinking\n");
 	}
-	if (state == TAKEFORK)
+	else if (state == TAKEFORK)
 	{
 		printf("has taken a fork\n");
 	}
-	if (state == EAT)
+	else if (state == EAT)
 	{
 		printf("is eating\n");
 	}
-	if (state == RELEASEFORK)
+	else if (state == RELEASEFORK)
 	{
 		printf("is releasing a fork\n");
 	}
-	if (state == SLEEP)
+	else if (state == SLEEP)
 	{
 		printf("is sleeping\n");
 	}
-	if (state == DEAD)
+	else if (state == DEAD)
 	{
 		printf("died\n");
 	}
