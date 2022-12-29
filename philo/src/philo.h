@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/22 15:09:51 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:51:51 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ struct s_geninfo
 int			check_anydead(t_philo *philo);
 
 void		changestate(t_philo *philo, int newstate);
+
+int	philo_solo(t_philo *philo);
 
 int			philo_think(t_philo *philo);
 

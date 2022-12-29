@@ -6,25 +6,26 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/29 17:24:16 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:54:31 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int	philo_solo(t_philo *philo)
+{
+	print_state(philo, TAKEFORK);
+	myusleep(philo, philo->wdata->time_to_die);
+	philo_autodie(philo);
+	return (1);
+}
+
 int	philo_think(t_philo *philo)
 {
 	changestate(philo, THINK);
-
-	if (! (philo->fleft && philo->fright))
-	{
-		print_state(philo, TAKEFORK);
-		myusleep(philo, philo->wdata->time_to_die);
-		return (0);
-	}
-
 	return (1);
 }
+
 /*
 int	philo_tkforks(t_philo *philo)
 {
