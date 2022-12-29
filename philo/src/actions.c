@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2022/12/23 20:54:57 by endarc           ###   ########.fr       */
+/*   Updated: 2022/12/29 16:40:20 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /* Alert: Forks may be left locked*/
+/*
 int	philo_think(t_philo *philo)
 {
 	if (! (philo->fleft && philo->fright))
@@ -40,6 +41,7 @@ int	philo_tkforks(t_philo *philo)
 	// philo_forks_unlock(philo);
 	return (1);
 }
+*/
 
 int	philo_eat(t_philo *philo)
 {
@@ -56,7 +58,7 @@ int	philo_eat(t_philo *philo)
 	}
 	return (1);
 }
-
+/*
 int	philo_rlsforks(t_philo *philo)
 {
 	// philo_forks_lock(philo);
@@ -65,6 +67,7 @@ int	philo_rlsforks(t_philo *philo)
 	philo_forks_unlock(philo);
 	return (1);
 }
+*/
 
 int	philo_sleep(t_philo *philo)
 {

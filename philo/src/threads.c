@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 16:36:00 by amaria-d         ###   ########.fr       */
+/*   Updated: 2022/12/29 16:38:51 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	*philo_go(void *arg)
 /* Now works with 1 philosopher and more*/
 void	threadmain(t_philo *philo)
 {
-	//TODO: Not stopping when I specify meals to eat
 	while (tmsnclstml(philo) < philo->wdata->time_to_die)
 	{
 		changestate(philo, THINK);
@@ -66,7 +65,7 @@ void	threadmain(t_philo *philo)
 		if (! philo_eat(philo))
 		{
 			philo_forks_unlock(philo);
-			return ; //TODO: Do something when amount of meals reached
+			return ;
 		}
 		if (check_anydead(philo))
 		{
