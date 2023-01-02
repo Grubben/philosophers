@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 19:16:27 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/02 16:42:45 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			check_anydead(t_philo *philo);
 
 void		changestate(t_philo *philo, int newstate);
 
-int	philo_solo(t_philo *philo);
+int			philo_solo(t_philo *philo);
 
 int			philo_think(t_philo *philo);
 
@@ -94,6 +94,10 @@ int			philo_rlsforks(t_philo *philo);
 int			philo_sleep(t_philo *philo);
 
 void		philo_autodie(t_philo *philo);
+
+int			tkneat(t_philo *philo);
+
+int			presleep(t_philo *philo);
 
 /*	FORKS	*/
 int			fork_init(t_fork *fork);
