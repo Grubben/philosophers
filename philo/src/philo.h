@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 15:45:16 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:59:19 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,10 @@ int			forks_destroy(t_fork *forks, size_t n_forks);
 int			philo_forks_lock(t_philo *philo);
 
 int			philo_forks_unlock(t_philo *philo);
+
+int			philo_forks_set(t_philo *philo);
+
+int			philo_forks_tk(t_philo *philo);
 
 /*	TABLE	*/
 int			philostable_create(t_geninfo *wdata);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: endarc <endarc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 17:15:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/19 12:57:51 by endarc           ###   ########.fr       */
+/*   Updated: 2023/01/04 17:02:08 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,23 @@ int	philo_forks_unlock(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->fright->lock);
 	pthread_mutex_unlock(&philo->fleft->lock);
+	return (1);
+}
+
+int	philo_forks_set(t_philo *philo)
+{
+	philo_forks_lock(philo);
+	philo->fleft->setb = 1;
+	philo->fright->setb = 1;
+	philo_forks_unlock(philo);
+	return (1);
+}
+
+int	philo_forks_tk(t_philo *philo)
+{
+	philo_forks_lock(philo);
+	philo->fleft->setb = 0;
+	philo->fright->setb = 0;
+	philo_forks_unlock(philo);
 	return (1);
 }

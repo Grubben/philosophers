@@ -3,7 +3,7 @@ NAME		= philo
 ## COMPILATION
 CC			= cc
 # Compilation Flags
-CFLAGS		=-O3 -Wall -Wextra -Werror -pthread# -g -fsanitize=thread
+CFLAGS		=-g3 -O3 -Wall -Wextra -Werror -pthread# -fsanitize=thread
 
 
 # Removal Flags. Not sure if necessary

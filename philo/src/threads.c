@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 16:54:10 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:02:19 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,17 @@ void	threadmain(t_philo *philo)
 		philo->fleft->setb = 0;
 		philo->fright->setb = 0;
 		philo_forks_unlock(philo);
-		// if (check_anydead(philo))
-		// 	break;
 		if (tkneat(philo))
 		{
-			philo_forks_lock(philo);
-			philo->fleft->setb = 1;
-			philo->fright->setb = 1;
-			philo_forks_unlock(philo);
+			philo_forks_set(philo);
 			break ;
 		}
 		if (! philo_eat(philo))
 		{
-			philo_forks_lock(philo);
-			philo->fleft->setb = 1;
-			philo->fright->setb = 1;
-			philo_forks_unlock(philo);
+			philo_forks_set(philo);
 			return ;
 		}
-		philo_forks_lock(philo);
-		philo->fleft->setb = 1;
-		philo->fright->setb = 1;
-		philo_forks_unlock(philo);
+		philo_forks_set(philo);
 		if (presleep(philo))
 			break ;
 		if (! philo_sleep(philo))
