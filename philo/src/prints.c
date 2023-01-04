@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 18:10:14 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:48:37 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,17 @@ void	print_state(t_philo *philo, int state)
 }
 
 /* Prints philo state if no philosopher has died*/
-void	prot_state(t_philo *philo, int state)
+int	prot_state(t_philo *philo, int state)
 {
+	int	has_died;
 	pthread_mutex_lock(&philo->wdata->allmutex);
-	if (philo->wdata->philo_died == 0)
+	has_died = philo->wdata->philo_died;
+	if (has_died == 0)
 	{
 		print_state(philo, state);
 		if (state == TAKEFORK || state == RELEASEFORK)
 			print_state(philo, state);
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
+	return (has_died);
 }

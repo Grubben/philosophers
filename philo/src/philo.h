@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/02 16:42:45 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:32:30 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ enum e_PHILOSTATE
 
 typedef struct s_fork
 {
-	int				setb;
 	pthread_mutex_t	lock;
+	int				setb;
 }				t_fork;
 
 typedef struct s_philo		t_philo;
@@ -43,33 +43,31 @@ typedef struct s_geninfo	t_geninfo;
 
 struct s_philo
 {
-	pthread_t	thread;
-	size_t		id;
-
+	t_geninfo	*wdata;
 	t_fork		*fleft;
 	t_fork		*fright;
-
+	pthread_t	thread;
+	size_t		id;
 	suseconds_t	lastmeal;
 	size_t		mealseaten;
 
-	t_geninfo	*wdata;
 };
 
 struct s_geninfo
 {
-	size_t			n_philos;
+	pthread_mutex_t	allmutex;
 
 	t_philo			*philarr;
 
-	size_t			n_forks;
 	t_fork			*forks;
+	size_t			n_forks;
+	
+	size_t			n_philos;
 
 	suseconds_t		time_to_die;
 	suseconds_t		time_to_eat;
 	suseconds_t		time_to_sleep;
 	size_t			n_must_eat;
-
-	pthread_mutex_t	allmutex;
 
 	suseconds_t		startstamp;
 
@@ -132,7 +130,7 @@ int			protectedsleep(t_philo *philo, suseconds_t time_to_x);
 /*	PRINTS	*/
 void		print_state(t_philo *philo, int state);
 
-void		prot_state(t_philo *philo, int state);
+int			prot_state(t_philo *philo, int state);
 
 /*  UTILS   */
 int			ft_atoi(const char *str);

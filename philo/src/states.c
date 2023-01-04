@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2022/12/29 19:16:17 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:24:09 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ int	check_anydead(t_philo *philo)
 	return (has_died);
 }
 
-/*
-void	changestate(t_philo *philo, int newstate)
-{
-	if (newstate == philo->state)
-		return ;
-	philo->state = newstate;
-	prot_state(philo, newstate);
-}
-*/
+// void	changestate(t_philo *philo, int newstate)
+// {
+// 	if (newstate == philo->state)
+// 		return ;
+// 	philo->state = newstate;
+// 	prot_state(philo, newstate);
+// }
+
 void	philo_autodie(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->wdata->allmutex);

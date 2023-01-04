@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/02 16:41:08 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:44:13 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	*philo_go(void *arg)
 	if (philo->wdata->n_philos == 1)
 		philo_solo(philo);
 	else
+	{
+		prot_state(philo, THINK);
 		threadmain(philo);
+	}
 	return (NULL);
 }
 
@@ -54,23 +57,37 @@ void	threadmain(t_philo *philo)
 {
 	while (tmsnclstml(philo) < philo->wdata->time_to_die)
 	{
-		prot_state(philo, THINK);
+		// if (prot_state(philo, THINK))
 		philo_forks_lock(philo);
-		if (tkneat(philo))
+		if (! (philo->fleft->setb && philo->fright->setb))
 		{
 			philo_forks_unlock(philo);
+			continue;
+		}
+		philo->fleft->setb = 0;
+		philo->fright->setb = 0;
+		philo_forks_unlock(philo);
+		if (check_anydead(philo))
+			break;
+		if (tkneat(philo))
+		{
 			break ;
 		}
 		if (! philo_eat(philo))
 		{
-			philo_forks_unlock(philo);
+			// philo_forks_unlock(philo);
 			return ;
 		}
+		philo_forks_lock(philo);
+		philo->fleft->setb = 1;
+		philo->fright->setb = 1;
 		philo_forks_unlock(philo);
 		if (presleep(philo))
 			break ;
 		if (! philo_sleep(philo))
 			break ;
+		if (prot_state(philo, THINK))
+			break;
 	}
 	philo_autodie(philo);
 }
