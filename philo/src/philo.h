@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 14:57:38 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:40:09 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ struct s_philo
 struct s_geninfo
 {
 	pthread_mutex_t	allmutex;
-	pthread_mutex_t	printlock;
 
 	t_philo			*philarr;
 

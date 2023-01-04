@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2023/01/04 15:27:10 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:38:51 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ int	philo_tkforks(t_philo *philo)
 	return (1);
 }
 */
+int	tkneat(t_philo *philo)
+{
+	int	has_died;
+
+	pthread_mutex_lock(&philo->wdata->allmutex);
+	has_died = philo->wdata->philo_died;
+	if (has_died == 0)
+	{
+		// pthread_mutex_lock(&philo->wdata->printlock);
+		print_state(philo, TAKEFORK);
+		print_state(philo, TAKEFORK);
+		print_state(philo, EAT);
+		// pthread_mutex_unlock(&philo->wdata->printlock);
+	}
+	pthread_mutex_unlock(&philo->wdata->allmutex);
+	return (has_died);
+}
 
 int	philo_eat(t_philo *philo)
 {
@@ -63,6 +80,23 @@ int	philo_rlsforks(t_philo *philo)
 }
 */
 
+int	presleep(t_philo *philo)
+{
+	int	has_died;
+
+	pthread_mutex_lock(&philo->wdata->allmutex);
+	has_died = philo->wdata->philo_died;
+	if (has_died == 0)
+	{
+		// pthread_mutex_lock(&philo->wdata->printlock);
+		print_state(philo, SLEEP);
+		// pthread_mutex_unlock(&philo->wdata->printlock);
+
+	}
+	pthread_mutex_unlock(&philo->wdata->allmutex);
+	return (has_died);
+}
+
 int	philo_sleep(t_philo *philo)
 {
 	if (! protectedsleep(philo, philo->wdata->time_to_sleep))
@@ -70,37 +104,3 @@ int	philo_sleep(t_philo *philo)
 	return (1);
 }
 
-int	tkneat(t_philo *philo)
-{
-	int	has_died;
-
-	pthread_mutex_lock(&philo->wdata->allmutex);
-	has_died = philo->wdata->philo_died;
-	pthread_mutex_unlock(&philo->wdata->allmutex);
-	if (has_died == 0)
-	{
-		pthread_mutex_lock(&philo->wdata->printlock);
-		print_state(philo, TAKEFORK);
-		print_state(philo, TAKEFORK);
-		print_state(philo, EAT);
-		pthread_mutex_unlock(&philo->wdata->printlock);
-	}
-	return (has_died);
-}
-
-int	presleep(t_philo *philo)
-{
-	int	has_died;
-
-	pthread_mutex_lock(&philo->wdata->allmutex);
-	has_died = philo->wdata->philo_died;
-	pthread_mutex_unlock(&philo->wdata->allmutex);
-	if (has_died == 0)
-	{
-		pthread_mutex_lock(&philo->wdata->printlock);
-		print_state(philo, SLEEP);
-		pthread_mutex_unlock(&philo->wdata->printlock);
-
-	}
-	return (has_died);
-}
