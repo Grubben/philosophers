@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2023/01/04 15:38:51 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:55:02 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ int	tkneat(t_philo *philo)
 	has_died = philo->wdata->philo_died;
 	if (has_died == 0)
 	{
-		// pthread_mutex_lock(&philo->wdata->printlock);
 		print_state(philo, TAKEFORK);
 		print_state(philo, TAKEFORK);
 		print_state(philo, EAT);
-		// pthread_mutex_unlock(&philo->wdata->printlock);
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 	return (has_died);
@@ -56,9 +54,9 @@ int	tkneat(t_philo *philo)
 
 int	philo_eat(t_philo *philo)
 {
-	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
-	if (! protectedsleep(philo, philo->wdata->time_to_eat))
+	if (tmsnclstml(philo) > philo->wdata->time_to_die)
 		return (0);
+	philo->lastmeal = get_timestamp(philo->wdata->startstamp);
 	if (philo->wdata->n_must_eat > 0)
 	{
 		philo->mealseaten++;
@@ -67,6 +65,8 @@ int	philo_eat(t_philo *philo)
 			return (0);
 		}
 	}
+	if (! protectedsleep(philo, philo->wdata->time_to_eat))
+		return (0);
 	return (1);
 }
 /*
@@ -88,9 +88,7 @@ int	presleep(t_philo *philo)
 	has_died = philo->wdata->philo_died;
 	if (has_died == 0)
 	{
-		// pthread_mutex_lock(&philo->wdata->printlock);
 		print_state(philo, SLEEP);
-		// pthread_mutex_unlock(&philo->wdata->printlock);
 
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);

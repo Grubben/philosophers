@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 15:40:09 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 15:45:16 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ struct s_philo
 	t_geninfo	*wdata;
 	t_fork		*fleft;
 	t_fork		*fright;
-	pthread_t	thread;
-	size_t		id;
 	suseconds_t	lastmeal;
 	size_t		mealseaten;
+	pthread_t	thread;
+	size_t		id;
 
 };
 
@@ -64,12 +64,13 @@ struct s_geninfo
 	
 	size_t			n_philos;
 
+	suseconds_t		startstamp;
+
 	suseconds_t		time_to_die;
 	suseconds_t		time_to_eat;
 	suseconds_t		time_to_sleep;
 	size_t			n_must_eat;
 
-	suseconds_t		startstamp;
 
 	int				philo_died;
 };

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 15:39:45 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:55:13 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ void	philo_autodie(t_philo *philo)
 	pthread_mutex_lock(&philo->wdata->allmutex);
 	if (philo->wdata->philo_died == 0)
 	{
-		// pthread_mutex_lock(&philo->wdata->printlock);
 		print_state(philo, DEAD);
-		// pthread_mutex_unlock(&philo->wdata->printlock);
 		philo->wdata->philo_died = 1;
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
