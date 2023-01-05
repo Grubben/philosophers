@@ -6,28 +6,27 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:44:38 by endarc            #+#    #+#             */
-/*   Updated: 2023/01/04 16:55:02 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:12:03 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	philo_solo(t_philo *philo)
+int	philo_think(t_philo *philo)
 {
-	print_state(philo, THINK);
-	print_state(philo, TAKEFORK);
-	myusleep(philo, philo->wdata->time_to_die);
-	philo_autodie(philo);
-	return (1);
+	philo_forks_lock(philo);
+	if (philo->fleft->setb && philo->fright->setb)
+	{
+		philo->fleft->setb = 0;
+		philo->fright->setb = 0;
+		philo_forks_unlock(philo);
+		return (1);
+	}
+	philo_forks_unlock(philo);
+	return (0);
 }
 
 /*
-int	philo_think(t_philo *philo)
-{
-	changestate(philo, THINK);
-	return (1);
-}
-
 int	philo_tkforks(t_philo *philo)
 {
 	philo->fleft->setb = 0;
@@ -36,6 +35,7 @@ int	philo_tkforks(t_philo *philo)
 	return (1);
 }
 */
+
 int	tkneat(t_philo *philo)
 {
 	int	has_died;
@@ -89,7 +89,6 @@ int	presleep(t_philo *philo)
 	if (has_died == 0)
 	{
 		print_state(philo, SLEEP);
-
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
 	return (has_died);
@@ -101,4 +100,3 @@ int	philo_sleep(t_philo *philo)
 		return (0);
 	return (1);
 }
-

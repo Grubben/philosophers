@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:54:01 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 19:44:12 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:09:52 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	*philo_go(void *arg)
 		philo_solo(philo);
 	else
 	{
+		prot_state(philo, THINK);
 		if (philo->id % 2)
 			usleep(1500);
-		prot_state(philo, THINK);
 		threadmain(philo);
 	}
 	return (NULL);
@@ -59,15 +59,8 @@ void	threadmain(t_philo *philo)
 {
 	while (tmsnclstml(philo) < philo->wdata->time_to_die)
 	{
-		philo_forks_lock(philo);
-		if (! (philo->fleft->setb && philo->fright->setb))
-		{
-			philo_forks_unlock(philo);
-			continue;
-		}
-		philo->fleft->setb = 0;
-		philo->fright->setb = 0;
-		philo_forks_unlock(philo);
+		if (! philo_think(philo))
+			continue ;
 		if (tkneat(philo))
 		{
 			philo_forks_set(philo);
@@ -84,7 +77,7 @@ void	threadmain(t_philo *philo)
 		if (! philo_sleep(philo))
 			break ;
 		if (prot_state(philo, THINK))
-			break;
+			break ;
 	}
 	philo_autodie(philo);
 }

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 16:56:25 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 16:55:13 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:11:47 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ void	philo_autodie(t_philo *philo)
 		philo->wdata->philo_died = 1;
 	}
 	pthread_mutex_unlock(&philo->wdata->allmutex);
+}
+
+int	philo_solo(t_philo *philo)
+{
+	print_state(philo, THINK);
+	print_state(philo, TAKEFORK);
+	myusleep(philo, philo->wdata->time_to_die);
+	philo_autodie(philo);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:29:56 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 19:51:11 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:00:06 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	myusleep(t_philo *philo, suseconds_t time_to_x)
 	suseconds_t	now;
 
 	sleepstart = get_timestamp(philo->wdata->startstamp);
-	// now = get_timestamp(philo->wdata->startstamp);
 	now = sleepstart;
 	while (now - sleepstart < time_to_x)
 	{

@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:56:46 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 17:13:15 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:12:24 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ struct s_geninfo
 
 	t_fork			*forks;
 	size_t			n_forks;
-	
+
 	size_t			n_philos;
 
 	suseconds_t		startstamp;
@@ -70,7 +70,6 @@ struct s_geninfo
 	suseconds_t		time_to_eat;
 	suseconds_t		time_to_sleep;
 	size_t			n_must_eat;
-
 
 	int				philo_died;
 };

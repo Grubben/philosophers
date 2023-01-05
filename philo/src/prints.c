@@ -6,7 +6,7 @@
 /*   By: amaria-d <amaria-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 15:58:58 by amaria-d          #+#    #+#             */
-/*   Updated: 2023/01/04 16:55:08 by amaria-d         ###   ########.fr       */
+/*   Updated: 2023/01/05 15:59:41 by amaria-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	print_state(t_philo *philo, int state)
 int	prot_state(t_philo *philo, int state)
 {
 	int	has_died;
+
 	pthread_mutex_lock(&philo->wdata->allmutex);
 	has_died = philo->wdata->philo_died;
 	if (has_died == 0)
